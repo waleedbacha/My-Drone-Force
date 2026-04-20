@@ -13,6 +13,11 @@ import aerial1 from "../../assests/images/gallery/drone4.jpg";
 import event1 from "../../assests/images/gallery/drone5.jpg";
 import tech1 from "../../assests/images/gallery/drone1.jpg";
 
+// Import TCB Drones Partnership Images
+import tcb1 from "../../assests/images/gallery/partnership.jpeg";
+// import tcb2 from "../../assests/images/gallery/partnership.jpeg";
+// import tcb3 from "../../assests/images/gallery/partnership.jpeg";
+
 const GalleryGrid = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -23,6 +28,7 @@ const GalleryGrid = () => {
   const videoThumbnail = "/videos/poster.jpg";
 
   const galleryItems = [
+    // Video Item
     {
       id: 0,
       src: "/videos/my-drone-force-video.mp4",
@@ -32,6 +38,32 @@ const GalleryGrid = () => {
       type: "video",
       duration: "2:30",
     },
+    // Partnership Images - TCB Drones
+    {
+      id: 7,
+      src: tcb1,
+      title: "MyDroneForce.com Signs Training Agreement with TCB Drones",
+      subtitle: "Strategic Partnership for Drone Education",
+      category: "partnerships",
+      type: "image",
+    },
+    // {
+    //   id: 8,
+    //   src: tcb2,
+    //   title: "TCB Drones Academy Collaboration",
+    //   subtitle: "Joint Training Program Launch",
+    //   category: "partnerships",
+    //   type: "image",
+    // },
+    // {
+    //   id: 9,
+    //   src: tcb3,
+    //   title: "TCB Drones Partnership Ceremony",
+    //   subtitle: "Official Signing Event",
+    //   category: "partnerships",
+    //   type: "image",
+    // },
+    // Regular Gallery Images
     {
       id: 1,
       src: training1,
@@ -83,6 +115,12 @@ const GalleryGrid = () => {
       name: "Featured",
       icon: "⭐",
       count: galleryItems.filter((i) => i.category === "featured").length,
+    },
+    {
+      id: "partnerships",
+      name: "Partnerships",
+      icon: "🤝",
+      count: galleryItems.filter((i) => i.category === "partnerships").length,
     },
     {
       id: "training",
@@ -153,7 +191,7 @@ const GalleryGrid = () => {
     }
   };
 
-  // SIMPLE VIDEO MODAL COMPONENT
+  // Video Modal Component
   const VideoModal = () => {
     if (!selectedVideo) return null;
 
@@ -173,7 +211,6 @@ const GalleryGrid = () => {
         }}
         onClick={() => setSelectedVideo(null)}
       >
-        {/* Close Button */}
         <button
           onClick={() => setSelectedVideo(null)}
           style={{
@@ -194,7 +231,6 @@ const GalleryGrid = () => {
           <FaTimes />
         </button>
 
-        {/* Video Container - Using HTML5 video with native controls */}
         <div
           style={{
             width: "80vw",
@@ -205,7 +241,6 @@ const GalleryGrid = () => {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* SIMPLE VIDEO WITH NATIVE CONTROLS - THIS WORKS 100% */}
           <video
             ref={videoRef}
             src={selectedVideo.src}
@@ -259,7 +294,8 @@ const GalleryGrid = () => {
               margin: "0 auto",
             }}
           >
-            Explore our drone training sessions, events, and aerial photography
+            Explore our drone training sessions, partnerships, and aerial
+            photography
           </p>
         </motion.div>
 
@@ -399,6 +435,17 @@ const GalleryGrid = () => {
                 >
                   {item.title}
                 </h4>
+                {item.subtitle && (
+                  <p
+                    style={{
+                      color: "rgba(255,255,255,0.7)",
+                      fontSize: "11px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    {item.subtitle}
+                  </p>
+                )}
                 <p
                   style={{
                     color: "rgba(255,255,255,0.8)",
@@ -425,7 +472,7 @@ const GalleryGrid = () => {
         hasPrev={currentIndex > 0}
       />
 
-      {/* Video Modal - Using Native HTML5 Controls */}
+      {/* Video Modal */}
       <VideoModal />
 
       <style jsx>{`

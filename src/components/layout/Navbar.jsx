@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes, FaSun, FaMoon } from "react-icons/fa";
@@ -10,6 +10,7 @@ const Navbar = ({ toggleTheme, theme }) => {
   const [scrolled, setScrolled] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
+  const menuRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -24,17 +25,52 @@ const Navbar = ({ toggleTheme, theme }) => {
     };
   }, []);
 
-  // Dynamic logo size based on screen width and scroll state - MUCH LARGER
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
+  // Prevent body scroll when menu is open on mobile
+  useEffect(() => {
+    if (isOpen && windowWidth < 992) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen, windowWidth]);
+
+  // Logo size
   const getLogoSize = () => {
     if (windowWidth < 576) {
-      // Mobile
-      return scrolled ? "60px" : "75px";
+      return scrolled ? "70px" : "85px";
     } else if (windowWidth < 992) {
-      // Tablet
-      return scrolled ? "75px" : "95px";
-    } else {
-      // Desktop
       return scrolled ? "85px" : "110px";
+    } else {
+      return scrolled ? "100px" : "130px";
+    }
+  };
+
+  // Navbar padding
+  const getNavbarPadding = () => {
+    if (windowWidth < 576) {
+      return scrolled ? "5px 0" : "10px 0";
+    } else if (windowWidth < 992) {
+      return scrolled ? "8px 0" : "12px 0";
+    } else {
+      return scrolled ? "10px 0" : "15px 0";
     }
   };
 
@@ -61,6 +97,8 @@ const Navbar = ({ toggleTheme, theme }) => {
 
   const handleNavClick = (sectionId) => {
     setIsOpen(false);
+    // Reset body overflow
+    document.body.style.overflow = "auto";
 
     if (window.location.pathname === "/") {
       const element = document.getElementById(sectionId);
@@ -84,6 +122,26 @@ const Navbar = ({ toggleTheme, theme }) => {
     }
   };
 
+  // Mobile menu animation variants
+  const mobileMenuVariants = {
+    hidden: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+    visible: {
+      opacity: 1,
+      height: "auto",
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -95,7 +153,7 @@ const Navbar = ({ toggleTheme, theme }) => {
         left: 0,
         right: 0,
         zIndex: 1000,
-        padding: scrolled ? "8px 0" : "15px 0",
+        padding: getNavbarPadding(),
         backgroundColor: scrolled ? "var(--card-bg)" : "transparent",
         backdropFilter: scrolled ? "blur(12px)" : "none",
         transition: "all 0.3s ease",
@@ -110,7 +168,7 @@ const Navbar = ({ toggleTheme, theme }) => {
             alignItems: "center",
           }}
         >
-          {/* Logo - Visible in Both Modes */}
+          {/* Logo */}
           <div
             onClick={handleLogoClick}
             style={{
@@ -127,7 +185,7 @@ const Navbar = ({ toggleTheme, theme }) => {
               style={{
                 height: getLogoSize(),
                 width: "auto",
-                maxWidth: "320px",
+                maxWidth: "400px",
                 transition: "all 0.3s ease",
                 objectFit: "contain",
                 ...(theme === "dark" && {
@@ -206,20 +264,22 @@ const Navbar = ({ toggleTheme, theme }) => {
               display: "none",
             }}
             className="mobile-menu-btn"
+            aria-label="Menu"
           >
             {isOpen ? <FaTimes /> : <FaBars />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
-      <AnimatePresence>
-        {isOpen && (
+      {/* Mobile Dropdown Menu - FIXED SMOOTH ANIMATION */}
+      <AnimatePresence mode="wait">
+        {isOpen && windowWidth < 992 && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            ref={menuRef}
+            variants={mobileMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
             className="glass"
             style={{
               position: "absolute",
@@ -230,15 +290,23 @@ const Navbar = ({ toggleTheme, theme }) => {
               padding: "20px",
               borderRadius: "20px",
               zIndex: 999,
+              overflow: "hidden",
             }}
           >
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
             >
               {navItems.map((item, index) => (
-                <button
+                <motion.button
                   key={index}
                   onClick={() => handleNavClick(item.to)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
                   style={{
                     color: "var(--text-primary)",
                     cursor: "pointer",
@@ -253,11 +321,14 @@ const Navbar = ({ toggleTheme, theme }) => {
                   }}
                 >
                   {item.name}
-                </button>
+                </motion.button>
               ))}
 
               {/* Dark/Light Mode Toggle for Mobile */}
-              <button
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
                 onClick={() => {
                   toggleTheme();
                   setIsOpen(false);
@@ -287,15 +358,18 @@ const Navbar = ({ toggleTheme, theme }) => {
                     <FaSun /> Light Mode
                   </>
                 )}
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.35 }}
                 onClick={() => handleNavClick("contact")}
                 className="btn-primary-custom"
                 style={{ width: "100%" }}
               >
                 Enroll Now
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         )}
