@@ -3,13 +3,7 @@ import { motion } from "framer-motion";
 import Masonry from "react-masonry-css";
 import ImageModal from "./ImageModal";
 import CategoryFilter from "./CategoryFilter";
-import {
-  FaPlay,
-  FaPause,
-  FaVolumeUp,
-  FaVolumeMute,
-  FaTimes,
-} from "react-icons/fa";
+import { FaPlay, FaTimes } from "react-icons/fa";
 
 // Import your local images
 import training1 from "../../assests/images/gallery/drone1.jpg";

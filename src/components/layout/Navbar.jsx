@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link as ScrollLink } from "react-scroll";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 // Import your PNG logo
@@ -131,7 +130,6 @@ const Navbar = ({ toggleTheme, theme }) => {
                 maxWidth: "320px",
                 transition: "all 0.3s ease",
                 objectFit: "contain",
-                // This makes dark logos visible in dark mode
                 ...(theme === "dark" && {
                   filter: "brightness(0) invert(1)",
                 }),
@@ -214,7 +212,7 @@ const Navbar = ({ toggleTheme, theme }) => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu - NOW WITH DARK/LIGHT TOGGLE */}
+      {/* Mobile Dropdown Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -258,7 +256,7 @@ const Navbar = ({ toggleTheme, theme }) => {
                 </button>
               ))}
 
-              {/* Dark/Light Mode Toggle for Mobile - ADDED */}
+              {/* Dark/Light Mode Toggle for Mobile */}
               <button
                 onClick={() => {
                   toggleTheme();

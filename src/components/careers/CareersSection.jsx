@@ -1,15 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import {
-  FaArrowRight,
-  FaChartLine,
-  FaBuilding,
-  FaCamera,
-  FaShieldAlt,
-  FaMapMarkedAlt,
-  FaLeaf,
-} from "react-icons/fa";
+import { FaArrowRight, FaBuilding, FaCamera, FaLeaf } from "react-icons/fa";
 
 const CareersSection = () => {
   const navigate = useNavigate();

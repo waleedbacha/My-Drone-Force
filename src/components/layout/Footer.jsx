@@ -23,6 +23,29 @@ const Footer = () => {
     { name: "Contact", to: "contact" },
   ];
 
+  const socialLinks = [
+    {
+      icon: <FaFacebook size={18} />,
+      url: "https://facebook.com/mydroneforce",
+      label: "Facebook",
+    },
+    {
+      icon: <FaTwitter size={18} />,
+      url: "https://twitter.com/mydroneforce",
+      label: "Twitter",
+    },
+    {
+      icon: <FaLinkedin size={18} />,
+      url: "https://linkedin.com/company/mydroneforce",
+      label: "LinkedIn",
+    },
+    {
+      icon: <FaInstagram size={18} />,
+      url: "https://instagram.com/mydroneforce",
+      label: "Instagram",
+    },
+  ];
+
   return (
     <footer
       style={{
@@ -79,66 +102,27 @@ const Footer = () => {
                 gap: "15px",
               }}
             >
-              <a
-                href="#"
-                style={{
-                  color: "var(--text-secondary)",
-                  transition: "all 0.3s ease",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--accent)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "var(--text-secondary)")
-                }
-              >
-                <FaFacebook size={18} />
-              </a>
-              <a
-                href="#"
-                style={{
-                  color: "var(--text-secondary)",
-                  transition: "all 0.3s ease",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--accent)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "var(--text-secondary)")
-                }
-              >
-                <FaTwitter size={18} />
-              </a>
-              <a
-                href="#"
-                style={{
-                  color: "var(--text-secondary)",
-                  transition: "all 0.3s ease",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--accent)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "var(--text-secondary)")
-                }
-              >
-                <FaLinkedin size={18} />
-              </a>
-              <a
-                href="#"
-                style={{
-                  color: "var(--text-secondary)",
-                  transition: "all 0.3s ease",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--accent)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "var(--text-secondary)")
-                }
-              >
-                <FaInstagram size={18} />
-              </a>
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  style={{
+                    color: "var(--text-secondary)",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "var(--accent)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "var(--text-secondary)")
+                  }
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
           </div>
 
