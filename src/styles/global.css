@@ -21,8 +21,28 @@ body {
   color: var(--text-primary);
 }
 
-/* CSS Variables - Light Mode (Default) */
-:root {
+/* ========== DARK MODE AS DEFAULT ========== */
+/* Default theme (first-time visitors see dark mode) */
+:root,
+[data-theme="dark"] {
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #111122;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --accent: #3b82f6;
+  --accent-light: #60a5fa;
+  --accent-dark: #2563eb;
+  --gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --card-bg: rgba(30, 30, 46, 0.95);
+  --border-color: #2d2d3a;
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Light Mode - when user toggles */
+[data-theme="light"] {
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
   --text-primary: #1a1a2e;
@@ -37,23 +57,6 @@ body {
   --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-/* Dark Mode Variables */
-[data-theme="dark"] {
-  --bg-primary: #0a0a1a;
-  --bg-secondary: #111122;
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --accent: #3b82f6;
-  --accent-light: #60a5fa;
-  --accent-dark: #2563eb;
-  --card-bg: rgba(30, 30, 46, 0.95);
-  --border-color: #2d2d3a;
-  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Container */
@@ -438,23 +441,14 @@ button,
     scroll-behavior: auto !important;
   }
 }
-/* Logo styling - No filters that hide the logo */
+
+/* Logo styling */
 .navbar-logo {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-/* No dark mode filters that might hide the logo */
-[data-theme="dark"] .navbar-logo {
-  /* Don't use invert or brightness filters */
-  opacity: 1;
-}
-
-[data-theme="light"] .navbar-logo {
-  opacity: 1;
-}
-/* Force logo visibility in dark mode */
 [data-theme="dark"] .navbar-logo {
   filter: brightness(0) invert(1) !important;
   background: transparent !important;
@@ -463,6 +457,7 @@ button,
 [data-theme="light"] .navbar-logo {
   filter: none !important;
 }
+
 /* Masonry Grid Styles */
 .masonry-grid {
   display: flex;
@@ -501,7 +496,8 @@ button,
   transform: translateY(100%);
   transition: transform 0.3s ease;
 }
-/* EMERGENCY SCROLL FIX - Force body scroll */
+
+/* Scroll Fix */
 html,
 body {
   overflow-y: auto !important;
@@ -515,24 +511,57 @@ body {
   position: relative !important;
 }
 
-/* Ensure no hidden overflow on any container */
 * {
   overflow-anchor: none;
 }
 
-/* Fix for modal-related overflow issues */
 body.modal-open {
   overflow-y: scroll !important;
   padding-right: 0 !important;
 }
+
 .container-custom {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px; /* This provides the left/right margins */
+  padding: 0 24px;
 }
+
 .hero-section,
 #home {
   position: relative;
   z-index: 1;
+}
+/* Scroll to Top Button Styles */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--gradient);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.scroll-to-top-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .scroll-to-top-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
 }

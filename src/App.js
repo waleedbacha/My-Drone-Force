@@ -13,9 +13,11 @@ import CareersSection from "./components/careers/CareersSection";
 import CareersPage from "./components/careers/CareersPage";
 import Contact from "./components/contact";
 import AnimatedBackground from "./components/common/AnimatedBackground";
+import ScrollToTop from "./components/common/ScrollToTop";
+import ScrollToTopButton from "./components/common/ScrollToTopButton";
 
 function App() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -23,7 +25,8 @@ function App() {
       setTheme(savedTheme);
       document.documentElement.setAttribute("data-theme", savedTheme);
     } else {
-      document.documentElement.setAttribute("data-theme", "light");
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
     }
   }, []);
 
@@ -36,6 +39,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <AnimatedBackground />
       <Navbar toggleTheme={toggleTheme} theme={theme} />
       <main>
@@ -58,6 +62,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <ScrollToTopButton />
     </Router>
   );
 }

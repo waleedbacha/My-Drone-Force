@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import WhoWeAre from "./WhoWeAre";
 import WhatWeDo from "./WhatWeDo";
 import WhoWeServe from "./WhoWeServe";
 
 const AboutDetails = () => {
+  // Scroll to top only when entering this page
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
-      {/* Hero Banner for About Details Page */}
       <section
         style={{
           padding: "120px 0 60px",
@@ -29,7 +33,6 @@ const AboutDetails = () => {
         </div>
       </section>
 
-      {/* Three Main Sections */}
       <WhoWeAre />
       <WhatWeDo />
       <WhoWeServe />
