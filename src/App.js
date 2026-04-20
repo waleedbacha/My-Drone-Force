@@ -1,24 +1,64 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/global.css";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+import HeroSection from "./components/home/HeroSection";
+import About from "./components/about/About";
+import AboutDetails from "./components/about/AboutDetails";
+import { GalleryGrid } from "./components/gallery";
+import { TestimonialCarousel } from "./components/testimonials";
+import CareersSection from "./components/careers/CareersSection";
+import CareersPage from "./components/careers/CareersPage";
+import Contact from "./components/contact";
+import AnimatedBackground from "./components/common/AnimatedBackground";
 
 function App() {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <AnimatedBackground />
+      <Navbar toggleTheme={toggleTheme} theme={theme} />
+      <main>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <HeroSection />
+                <About />
+                <GalleryGrid />
+                <CareersSection />
+                <TestimonialCarousel />
+                <Contact />
+              </>
+            }
+          />
+          <Route path="/about-details" element={<AboutDetails />} />
+          <Route path="/careers" element={<CareersPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </Router>
   );
 }
 

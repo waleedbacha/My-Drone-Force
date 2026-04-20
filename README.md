@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+echo "# 🚁 My Drone Force - Drone Training & Certification Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📌 Project Overview
 
-## Available Scripts
+A modern, responsive, and interactive website for **My Drone Force** - America's leading drone training and certification provider.
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+- 🎨 **Modern UI/UX** - Glassmorphism design with dark/light mode
+- 🚁 **3D Drone Model** - Interactive 3D drone viewer using Three.js
+- 📱 **Fully Responsive** - Works perfectly on all devices
+- 🎭 **Smooth Animations** - Framer Motion powered transitions
+- 📸 **Gallery Section** - Masonry grid with image lightbox and video support
+- ⭐ **Testimonials** - 3D carousel with autoplay and star ratings
+- 💼 **Careers Page** - Detailed career opportunities in drone industry
+- 📞 **Contact Section** - Contact cards, Google Maps, and FAQ accordion
+- 🌓 **Dark/Light Mode** - Theme toggle with localStorage persistence
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Technology    | Purpose                    |
+| ------------- | -------------------------- |
+| React.js      | Frontend framework         |
+| Framer Motion | Animations                 |
+| Three.js      | 3D drone model             |
+| Bootstrap     | Responsive grid            |
+| React Router  | Page navigation            |
+| EmailJS       | Contact form (coming soon) |
 
-### `npm test`
+## 📁 Project Structure
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+\`\`\`
+my-drone-force/
+├── src/
+│ ├── components/
+│ │ ├── layout/ # Navbar, Footer
+│ │ ├── home/ # HeroSection
+│ │ ├── about/ # About pages
+│ │ ├── gallery/ # Gallery components
+│ │ ├── testimonials/# Testimonial carousel
+│ │ ├── careers/ # Careers section & page
+│ │ ├── contact/ # Contact components
+│ │ └── common/ # Shared components
+│ ├── styles/ # Global CSS
+│ └── assets/ # Images and models
+├── public/ # Static files
+└── package.json
+\`\`\`
 
-### `npm run build`
+## 🚀 Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+\`\`\`bash
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Clone the repository
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+git clone https://github.com/waleedbacha/My-Drone-Force
 
-### `npm run eject`
+# Navigate to project
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+cd my-drone-force
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Install dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+npm install
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Start development server
 
-## Learn More
+npm start
+\`\`\`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🌓 Dark/Light Mode
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Toggle between light and dark themes using the button in the navbar. Your preference is saved in localStorage.
 
-### Code Splitting
+## 📱 Responsive Design
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **Desktop:** Full experience with 3D drone
+- **Tablet:** Optimized 2-column layout
+- **Mobile:** Single column, simplified animations
 
-### Analyzing the Bundle Size
+## 🤝 Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Making a Progressive Web App
+## 📄 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This project is licensed under the MIT License.
 
-### Advanced Configuration
+## 📞 Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+My Drone Force - [info@mydroneforce.com](mailto:info@mydroneforce.com)
 
-### Deployment
+**Live Demo:** [Coming Soon]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+⭐ Star this repository if you like it!
+" > README.md
