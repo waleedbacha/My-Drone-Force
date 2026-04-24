@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import API_URL from "../config/api";
 
 const OnboardingModal = ({ isOpen, onClose, user, token }) => {
   const [onboardingData, setOnboardingData] = useState(null);
@@ -33,12 +34,9 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
         toast.error("Invalid user ID");
         return;
       }
-      const response = await axios.get(
-        `http://localhost:5000/api/onboarding/${userId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const response = await axios.get(`${API_URL}/api/onboarding/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (isMountedRef.current) {
         setOnboardingData(response.data.data);
       }
@@ -115,7 +113,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
             updateData[field] = value;
 
             await axios.put(
-              `http://localhost:5000/api/onboarding/${userId}/${phase}`,
+              `${API_URL}/api/onboarding/${userId}/${phase}`,
               updateData,
               {
                 headers: { Authorization: `Bearer ${token}` },
@@ -156,7 +154,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
       updateData[field] = value;
 
       await axios.put(
-        `http://localhost:5000/api/onboarding/${userId}/${phase}`,
+        `${API_URL}/api/onboarding/${userId}/${phase}`,
         updateData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -197,7 +195,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
       updateData[scoreField] = validScore;
 
       await axios.put(
-        `http://localhost:5000/api/onboarding/${userId}/${phase}`,
+        `${API_URL}/api/onboarding/${userId}/${phase}`,
         updateData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -226,7 +224,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/onboarding/${userId}/accountability`,
+        `${API_URL}/api/onboarding/${userId}/accountability`,
         { week, completed, response },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -279,7 +277,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
 
           try {
             await axios.put(
-              `http://localhost:5000/api/onboarding/${userId}/accountability`,
+              `${API_URL}/api/onboarding/${userId}/accountability`,
               { week, completed: currentCompleted, response: value },
               {
                 headers: { Authorization: `Bearer ${token}` },
@@ -317,7 +315,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
     try {
       const updateData = { [field]: value };
       await axios.put(
-        `http://localhost:5000/api/onboarding/${userId}/final-outcome`,
+        `${API_URL}/api/onboarding/${userId}/final-outcome`,
         updateData,
         {
           headers: { Authorization: `Bearer ${token}` },

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
+import API_URL from "../config/api";
 import {
   FaUsers,
   FaUserCheck,
@@ -34,12 +35,9 @@ const AnalyticsDashboard = ({ token }) => {
   const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5000/api/admin/dashboard",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const response = await axios.get(`${API_URL}/api/admin/dashboard`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setDashboardData(response.data.data);
     } catch (error) {
       console.error("Error fetching dashboard:", error);

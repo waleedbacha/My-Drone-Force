@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Step1IntakeForm from "./Step1IntakeForm";
 import Step2ScreeningRubric from "./Step2ScreeningRubric";
 import Step3CommitmentPledge from "./Step3CommitmentPledge";
+import API_URL from "../config/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -98,48 +99,30 @@ const Register = () => {
   };
 
   // Step 1: Submit Intake Form
-  // Step 1: Submit Intake Form
-  // Step 1: Submit Intake Form
-  // Step 1: Submit Intake Form
   const handleStep1Submit = async (formData) => {
     setIsSubmitting(true);
     try {
       const submitData = new FormData();
 
-      console.log("Original formData:", formData);
-      console.log(
-        "English proficiency value:",
-        formData.englishProficiency,
-        typeof formData.englishProficiency,
-      );
-
       Object.keys(formData).forEach((key) => {
         if (formData[key] !== null && formData[key] !== undefined) {
           if (key === "profileImage" && formData[key] instanceof File) {
             submitData.append(key, formData[key]);
-          } else if (key === "commitmentAgreements") {
-            // Already a JSON string from Step1IntakeForm
-            submitData.append(key, formData[key]);
+          } else if (
+            key === "commitmentAgreements" &&
+            Array.isArray(formData[key])
+          ) {
+            submitData.append(key, JSON.stringify(formData[key]));
           } else if (typeof formData[key] === "boolean") {
-            // Send boolean as is - let multer handle it
-            // Multer will convert to string, but backend will parse
-            submitData.append(key, formData[key] ? "true" : "false");
+            submitData.append(key, formData[key].toString());
           } else {
             submitData.append(key, formData[key]);
           }
         }
       });
 
-      // Log all form data for debugging
-      console.log("FormData entries:");
-      for (let pair of submitData.entries()) {
-        console.log(
-          pair[0] + ": " + pair[1] + " (type: " + typeof pair[1] + ")",
-        );
-      }
-
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register/step1",
+        `${API_URL}/api/auth/register/step1`,
         submitData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -175,10 +158,10 @@ const Register = () => {
   const handleStep2Submit = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register/step2",
-        { ...data, userId },
-      );
+      const response = await axios.post(`${API_URL}/api/auth/register/step2`, {
+        ...data,
+        userId,
+      });
 
       if (response.data.success) {
         setScreeningResult(response.data.data);
@@ -206,10 +189,10 @@ const Register = () => {
   const handleStep3Submit = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register/step3",
-        { ...data, userId },
-      );
+      const response = await axios.post(`${API_URL}/api/auth/register/step3`, {
+        ...data,
+        userId,
+      });
 
       if (response.data.success) {
         toast.success(response.data.message);
@@ -374,7 +357,6 @@ const Register = () => {
                 isSubmitting={isSubmitting}
                 onSubmit={handleStep2Submit}
                 screeningResult={screeningResult}
-                onBack={() => setCurrentStep(1)}
               />
             )}
 
@@ -385,7 +367,6 @@ const Register = () => {
                 isSubmitting={isSubmitting}
                 onSubmit={handleStep3Submit}
                 userInfo={step1Data}
-                onBack={() => setCurrentStep(2)}
               />
             )}
           </div>

@@ -16,6 +16,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import OnboardingModal from "../auth/OnboardingModal";
 import ExportToExcel from "./ExportToExcel";
+import API_URL from "../config/api";
 
 const UsersTable = ({ users, loading, fetchUsers, token }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,7 +35,7 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
   const handleDelete = async (userId, userName) => {
     if (window.confirm(`Are you sure you want to delete ${userName}?`)) {
       try {
-        await axios.delete(`http://localhost:5000/api/admin/users/${userId}`, {
+        await axios.delete(`${API_URL}/api/admin/users/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success(`${userName} deleted successfully`);
@@ -49,10 +50,11 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
     try {
       const doc = new jsPDF();
 
-      // Get IP and User Agent if available
       const response = await axios.get(
-        `http://localhost:5000/api/admin/users/${user._id}/agreement`,
-        { headers: { Authorization: `Bearer ${token}` } },
+        `${API_URL}/api/admin/users/${user._id}/agreement`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
       const agreement = response.data.agreement;
 

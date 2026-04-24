@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaFileExcel, FaSpinner } from "react-icons/fa";
+import API_URL from "../config/api";
 
 const ExportToExcel = ({ users, token, onExportStart, onExportComplete }) => {
   const [exporting, setExporting] = useState(false);
@@ -10,8 +11,10 @@ const ExportToExcel = ({ users, token, onExportStart, onExportComplete }) => {
   const fetchUserOnboarding = async (user) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/onboarding/${user._id}`,
-        { headers: { Authorization: `Bearer ${token}` } },
+        `${API_URL}/api/onboarding/${user._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
       return response.data.data?.onboarding || {};
     } catch (error) {

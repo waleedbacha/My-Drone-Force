@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { FaEnvelope, FaLock, FaArrowRight, FaShieldAlt } from "react-icons/fa";
+import API_URL from "../config/api";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -32,10 +33,7 @@ const AdminLogin = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/admin/login",
-        formData,
-      );
+      const response = await axios.post(`${API_URL}/api/admin/login`, formData);
 
       if (response.data.success) {
         localStorage.setItem("adminToken", response.data.token);

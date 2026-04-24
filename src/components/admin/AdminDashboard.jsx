@@ -33,6 +33,7 @@ import GeographicHeatMap from "./GeographicHeatMap";
 import TrendComparisonChart from "./TrendComparisonChart";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 import droneLogo from "../../assests/images/white.png";
+import API_URL from "../config/api";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -75,12 +76,9 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(
-        "http://localhost:5000/api/admin/stats",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const response = await axios.get(`${API_URL}/api/admin/stats`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setStats(response.data.stats);
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -90,12 +88,9 @@ const AdminDashboard = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(
-        "http://localhost:5000/api/admin/users",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const response = await axios.get(`${API_URL}/api/admin/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUsers(response.data.users);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -107,12 +102,9 @@ const AdminDashboard = () => {
   const fetchUsersForMap = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(
-        "http://localhost:5000/api/admin/users",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const response = await axios.get(`${API_URL}/api/admin/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUserLocationData(response.data.users);
     } catch (error) {
       console.error("Error fetching users for map:", error);
@@ -122,13 +114,9 @@ const AdminDashboard = () => {
   const fetchRegistrationTrends = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(
-        "http://localhost:5000/api/admin/stats",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-
+      const response = await axios.get(`${API_URL}/api/admin/stats`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       // Convert registrationsByMonth from API to chart format
       if (
         response.data.stats?.registrationsByMonth &&
