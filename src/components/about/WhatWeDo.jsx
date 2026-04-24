@@ -2,44 +2,67 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
+  FaSearch,
   FaGraduationCap,
-  FaRocket,
+  FaBriefcase,
   FaHandshake,
-  FaChartLine,
 } from "react-icons/fa";
-// Removed FaDrone - using FaRocket instead
 
 const WhatWeDo = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const services = [
     {
-      icon: <FaGraduationCap />,
-      title: "Part 107 Certification Training",
+      icon: <FaSearch />,
+      title: "1. Identify",
+      subtitle: "Find & Recruit",
       description:
-        "Comprehensive exam preparation with 98% pass rate. Our proven curriculum covers all FAA requirements.",
-      color: "#0066cc",
-    },
-    {
-      icon: <FaRocket />, // Changed from FaDrone to FaRocket
-      title: "Hands-On Flight Training",
-      description:
-        "Real-world drone operation experience with industry-standard equipment and professional instructors.",
+        "We partner with community organizations, workforce boards, and schools across Arkansas, Mississippi, and Tennessee to identify motivated Opportunity Youth ready for a career change.",
+      features: [
+        "Community partnerships across 3 states",
+        "Targeted outreach to disconnected youth",
+        "No experience required — just motivation",
+      ],
       color: "#3b82f6",
     },
     {
-      icon: <FaHandshake />,
-      title: "Career Placement Assistance",
+      icon: <FaGraduationCap />,
+      title: "2. Train",
+      subtitle: "Certify & Skill Up",
       description:
-        "Job placement support with 50+ corporate partners actively hiring certified drone pilots.",
-      color: "#00a3ff",
+        "Comprehensive FAA Part 107 certification training with hands-on experience using enterprise-grade drones — LiDAR, Thermal, Multispectral, and more.",
+      features: [
+        "98% FAA Part 107 pass rate",
+        "Hands-on with industry-standard equipment",
+        "Specialized tracks: Ag-Tech, Infrastructure, Public Safety",
+      ],
+      color: "#10b981",
     },
     {
-      icon: <FaChartLine />,
-      title: "Workforce Development",
+      icon: <FaBriefcase />,
+      title: "3. Place",
+      subtitle: "Launch Career",
       description:
-        "Specialized programs for youth and young adults to launch successful drone careers.",
-      color: "#0066cc",
+        "Direct job placement with 50+ corporate partners across the Mid-South. Starting salaries range from $45k to $85k+ with room for growth.",
+      features: [
+        "$60k+ average starting salary",
+        "50+ corporate partners hiring",
+        "Lifetime career support",
+      ],
+      color: "#f59e0b",
+    },
+    {
+      icon: <FaHandshake />,
+      title: "Lifetime Support",
+      subtitle: "Ongoing Success",
+      description:
+        "Our commitment doesn't end at graduation. We provide ongoing mentorship, resume help, interview prep, and career advancement opportunities.",
+      features: [
+        "Continuous mentorship",
+        "Advanced certification pathways",
+        "Networking events & job fairs",
+      ],
+      color: "#8b5cf6",
     },
   ];
 
@@ -67,7 +90,7 @@ const WhatWeDo = () => {
             WHAT WE DO
           </span>
           <h2 className="display-4 fw-bold mb-3 gradient-text">
-            Our Core Services
+            Identify. Train. Place.
           </h2>
           <p
             className="lead"
@@ -77,7 +100,7 @@ const WhatWeDo = () => {
               margin: "0 auto",
             }}
           >
-            Comprehensive drone training and certification programs
+            A clear, proven path from today to a high-paying drone career
           </p>
         </motion.div>
 
@@ -88,7 +111,7 @@ const WhatWeDo = () => {
               className="col-lg-3 col-md-6"
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+              transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
             >
               <div
                 className="glass p-4"
@@ -96,6 +119,8 @@ const WhatWeDo = () => {
                   borderRadius: "20px",
                   height: "100%",
                   transition: "all 0.3s ease",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.transform = "translateY(-5px)")
@@ -121,23 +146,72 @@ const WhatWeDo = () => {
                   {service.icon}
                 </div>
                 <h4
-                  style={{ marginBottom: "10px", color: "var(--text-primary)" }}
+                  style={{ marginBottom: "5px", color: "var(--text-primary)" }}
                 >
                   {service.title}
                 </h4>
                 <p
                   style={{
+                    color: "var(--accent)",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    marginBottom: "12px",
+                  }}
+                >
+                  {service.subtitle}
+                </p>
+                <p
+                  style={{
                     color: "var(--text-secondary)",
                     fontSize: "14px",
                     lineHeight: "1.6",
+                    marginBottom: "15px",
                   }}
                 >
                   {service.description}
                 </p>
+                <ul
+                  style={{
+                    margin: 0,
+                    paddingLeft: "18px",
+                    color: "var(--text-secondary)",
+                    fontSize: "12px",
+                    lineHeight: "1.8",
+                  }}
+                >
+                  {service.features.map((feature, i) => (
+                    <li key={i}>{feature}</li>
+                  ))}
+                </ul>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Connecting Arrows (desktop only) */}
+        {/* <div
+          style={{
+            display: isMobile ? "none" : "flex",
+            justifyContent: "center",
+            gap: "100px",
+            marginTop: "20px",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          {["→", "→", "→"].map((arrow, i) => (
+            <div
+              key={i}
+              style={{
+                fontSize: "28px",
+                color: "var(--accent)",
+                opacity: 0.5,
+              }}
+            >
+              {arrow}
+            </div>
+          ))}
+        </div> */}
       </div>
     </section>
   );

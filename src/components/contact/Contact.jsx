@@ -47,6 +47,64 @@ const Contact = () => {
 
         {/* Contact Info Cards */}
         <ContactInfo />
+        {/* Employer & Partner Callout */}
+        {/* <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true }}
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05))",
+            borderRadius: "20px",
+            padding: "30px",
+            marginTop: "30px",
+            textAlign: "center",
+            border: "1px solid rgba(16, 185, 129, 0.2)",
+          }}
+        >
+          <h4 style={{ marginBottom: "15px", color: "var(--text-primary)" }}>
+            📢 Looking to hire drone pilots?
+          </h4>
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              marginBottom: "20px",
+              maxWidth: "600px",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            We have certified graduates ready to work in Agriculture,
+            Construction, Infrastructure, and Public Safety across Arkansas,
+            Mississippi, and Tennessee.
+          </p>
+          <div
+            style={{
+              display: "flex",
+              gap: "15px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              className="btn-primary-custom"
+              style={{ background: "#10b981" }}
+            >
+              Hire Our Graduates →
+            </button>
+            <button className="btn-outline-custom">Partner With Us</button>
+          </div>
+          <p
+            style={{
+              marginTop: "15px",
+              fontSize: "12px",
+              color: "var(--text-secondary)",
+            }}
+          >
+            📍 Serving the Mid-South: Arkansas • Mississippi • Tennessee
+          </p>
+        </motion.div> */}
 
         {/* Contact Form and Map Row */}
         <div className="row g-4 mt-4">

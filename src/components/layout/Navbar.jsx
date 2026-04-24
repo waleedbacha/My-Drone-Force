@@ -122,6 +122,12 @@ const Navbar = ({ toggleTheme, theme }) => {
     }
   };
 
+  // Handle Enroll Now button click
+  const handleEnrollClick = () => {
+    setIsOpen(false);
+    navigate("/register");
+  };
+
   // Mobile menu animation variants
   const mobileMenuVariants = {
     hidden: {
@@ -240,8 +246,10 @@ const Navbar = ({ toggleTheme, theme }) => {
             >
               {theme === "light" ? <FaMoon /> : <FaSun />}
             </button>
+
+            {/* ✅ UPDATED: Enroll Now button navigates to /register */}
             <button
-              onClick={() => handleNavClick("contact")}
+              onClick={handleEnrollClick}
               className="btn-primary-custom"
               style={{
                 padding: "10px 28px",
@@ -360,11 +368,12 @@ const Navbar = ({ toggleTheme, theme }) => {
                 )}
               </motion.button>
 
+              {/* ✅ UPDATED: Mobile Enroll Now button navigates to /register */}
               <motion.button
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.35 }}
-                onClick={() => handleNavClick("contact")}
+                onClick={handleEnrollClick}
                 className="btn-primary-custom"
                 style={{ width: "100%" }}
               >

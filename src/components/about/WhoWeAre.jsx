@@ -326,39 +326,44 @@ const WhoWeAre = () => {
         </div>
 
         {/* Mission Statement Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="glass text-center p-5 mt-5"
+        <div
+          className="glass text-center p-5"
           style={{
             borderRadius: "24px",
             maxWidth: "900px",
             margin: "60px auto 0 auto",
+            background:
+              "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
+            color: "white",
           }}
         >
           <p
             style={{
-              fontSize: "20px",
+              fontSize: "22px",
               fontStyle: "italic",
-              color: "var(--text-primary)",
-              lineHeight: "1.7",
+              lineHeight: "1.5",
               marginBottom: "20px",
             }}
           >
-            "Our mission is to prepare youth and young adults for high-paying
-            careers in one of the fastest-growing industries worldwide."
+            "Our mission is to identify, train, and place Opportunity Youth from
+            Arkansas, Mississippi, and Tennessee into high-paying careers in the
+            drone industry. We're building a workforce pipeline that transforms
+            lives and strengthens our regional economy."
           </p>
           <div
             style={{
               width: "60px",
               height: "3px",
-              background: "var(--gradient)",
+              background: "white",
               margin: "0 auto",
               borderRadius: "3px",
+              opacity: 0.5,
             }}
           />
-        </motion.div>
+          <p style={{ marginTop: "15px", fontSize: "14px", opacity: 0.8 }}>
+            — My Drone Force Team
+          </p>
+        </div>
       </div>
     </section>
   );

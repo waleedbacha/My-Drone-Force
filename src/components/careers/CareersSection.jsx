@@ -1,7 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FaArrowRight, FaBuilding, FaCamera, FaLeaf } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaBuilding,
+  FaCamera,
+  FaLeaf,
+  FaChartLine,
+} from "react-icons/fa";
 
 const CareersSection = () => {
   const navigate = useNavigate();
@@ -11,50 +17,35 @@ const CareersSection = () => {
       icon: <FaLeaf />,
       title: "Agricultural Technology",
       description:
-        "Precision agriculture, crop monitoring, yield optimization, and livestock management.",
-      salary: "$45,000-$75,000",
+        "Precision agriculture, crop monitoring, yield optimization, and livestock management across Arkansas farms.",
+      salary: "$45,000 - $75,000",
+      demand: "Very High",
+      demandColor: "#ef4444",
+      region: "🔥 High demand in AR, MS, TN",
       color: "#4caf50",
     },
     {
       icon: <FaBuilding />,
       title: "Construction & Infrastructure",
       description:
-        "Site surveying, progress monitoring, safety inspections, and project documentation.",
-      salary: "$50,000-$80,000",
+        "Site surveying, progress monitoring, safety inspections, and project documentation for major projects.",
+      salary: "$50,000 - $85,000",
+      demand: "Very High",
+      demandColor: "#ef4444",
+      region: "🏗️ Major infrastructure projects hiring now",
       color: "#ff9800",
     },
     {
       icon: <FaCamera />,
-      title: "Real Estate Photography",
+      title: "Real Estate & Commercial Photography",
       description:
-        "Aerial photography and videography for property listings, virtual tours, and marketing materials.",
-      salary: "$200-$500/shoot",
+        "Aerial photography, virtual tours, marketing content, and specialized imaging services.",
+      salary: "$45,000 - $70,000",
+      demand: "High",
+      demandColor: "#f59e0b",
+      region: "📸 Growing market across the Mid-South",
       color: "#2196f3",
     },
-    // {
-    //   icon: <FaCamera />,
-    //   title: "Commercial Photography",
-    //   description:
-    //     "Event coverage, cinematic productions, marketing content, and specialized aerial photography services.",
-    //   salary: "Varies by project",
-    //   color: "#9c27b0",
-    // },
-    // {
-    //   icon: <FaShieldAlt />,
-    //   title: "Security & Surveillance",
-    //   description:
-    //     "Perimeter monitoring, crowd management, asset protection, and emergency response support.",
-    //   salary: "$45,000-$70,000",
-    //   color: "#f44336",
-    // },
-    // {
-    //   icon: <FaMapMarkedAlt />,
-    //   title: "Mapping & Surveying",
-    //   description:
-    //     "Topographic mapping, land surveying, GIS data collection, and environmental monitoring.",
-    //   salary: "$55,000-$85,000",
-    //   color: "#009688",
-    // },
   ];
 
   const handleLearnMore = () => {
@@ -67,7 +58,6 @@ const CareersSection = () => {
       style={{ padding: "80px 0", background: "var(--bg-secondary)" }}
     >
       <div className="container-custom">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -101,11 +91,10 @@ const CareersSection = () => {
             }}
           >
             Join one of the fastest-growing industries with high-paying career
-            opportunities
+            opportunities right here in the Mid-South
           </p>
         </motion.div>
 
-        {/* Career Cards Grid */}
         <div className="row g-4">
           {careerPaths.map((career, index) => (
             <motion.div
@@ -125,6 +114,8 @@ const CareersSection = () => {
                   transition: "all 0.3s ease",
                   height: "100%",
                   border: "1px solid var(--border-color)",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-8px)";
@@ -136,6 +127,23 @@ const CareersSection = () => {
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
+                {/* Demand Badge */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "20px",
+                    right: "20px",
+                    background: career.demandColor,
+                    padding: "4px 12px",
+                    borderRadius: "50px",
+                    fontSize: "11px",
+                    fontWeight: "700",
+                    color: "white",
+                  }}
+                >
+                  {career.demand} Demand
+                </div>
+
                 <div
                   style={{
                     width: "60px",
@@ -152,6 +160,7 @@ const CareersSection = () => {
                 >
                   {career.icon}
                 </div>
+
                 <h3
                   style={{
                     fontSize: "22px",
@@ -162,15 +171,18 @@ const CareersSection = () => {
                 >
                   {career.title}
                 </h3>
+
                 <p
                   style={{
                     color: "var(--text-secondary)",
                     lineHeight: "1.6",
                     marginBottom: "15px",
+                    fontSize: "14px",
                   }}
                 >
                   {career.description}
                 </p>
+
                 <div
                   style={{
                     display: "inline-block",
@@ -180,16 +192,32 @@ const CareersSection = () => {
                     fontSize: "13px",
                     fontWeight: "600",
                     color: "var(--accent)",
+                    marginBottom: "10px",
                   }}
                 >
                   💰 {career.salary}
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    marginTop: "10px",
+                    fontSize: "12px",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  <FaChartLine
+                    style={{ color: career.demandColor, fontSize: "12px" }}
+                  />
+                  <span>{career.region}</span>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* CTA Button */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -198,7 +226,7 @@ const CareersSection = () => {
           className="text-center mt-5"
         >
           <button onClick={handleLearnMore} className="btn-primary-custom">
-            Learn More About Careers
+            Explore All Career Paths
             <FaArrowRight style={{ marginLeft: "8px" }} />
           </button>
         </motion.div>

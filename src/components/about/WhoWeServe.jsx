@@ -1,7 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FaUsers, FaBuilding, FaRocket, FaShieldAlt } from "react-icons/fa";
+import {
+  FaUsers,
+  FaBuilding,
+  FaHandshake,
+  FaUserGraduate,
+  FaChartLine,
+} from "react-icons/fa";
 
 const WhoWeServe = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -9,35 +15,53 @@ const WhoWeServe = () => {
   const audiences = [
     {
       icon: <FaUsers />,
-      title: "Youth & Young Adults",
+      title: "Opportunity Youth",
+      subtitle: "Ages 16-24",
       description:
-        "STEM-focused drone education programs designed to prepare the next generation for high-paying careers.",
-      audience: "Ages 16-24",
+        "Young adults in Arkansas, Mississippi, and Tennessee who are ready for a career change. No experience needed — just motivation. We provide the training, certification, and job placement.",
+      audience: "🎯 Target Population",
       color: "#0066cc",
+      badge: "No Experience Needed",
     },
     {
       icon: <FaBuilding />,
-      title: "Corporate Partners",
+      title: "Employers & Corporate Partners",
+      subtitle: "Hiring Certified Pilots",
       description:
-        "Custom training programs for businesses seeking to integrate drone technology into their operations.",
-      audience: "Enterprise Clients",
-      color: "#3b82f6",
+        "Companies seeking skilled drone pilots for Precision Agriculture, Infrastructure Inspection, and Construction projects across the Mid-South. Our graduates are ready to work.",
+      audience: "🤝 Hiring Now",
+      color: "#10b981",
+      badge: "50+ Partners",
     },
     {
-      icon: <FaRocket />,
+      icon: <FaHandshake />,
+      title: "Community Organizations",
+      subtitle: "Strategic Partners",
+      description:
+        "Non-profits, workforce boards, and community groups helping us identify and recruit Opportunity Youth. Together, we're building a stronger workforce pipeline.",
+      audience: "🌱 Join Us",
+      color: "#f59e0b",
+      badge: "Partnership Opportunities",
+    },
+    {
+      icon: <FaUserGraduate />,
       title: "Career Changers",
+      subtitle: "Adults Seeking New Paths",
       description:
-        "Fast-track certification programs for professionals transitioning into the drone industry.",
-      audience: "Adult Learners",
-      color: "#00a3ff",
+        "Fast-track certification programs for professionals transitioning into the drone industry. Leverage your existing skills and add drone expertise.",
+      audience: "📈 Career Advancement",
+      color: "#8b5cf6",
+      badge: "Flexible Schedule",
     },
     {
-      icon: <FaShieldAlt />,
+      icon: <FaChartLine />,
       title: "Government & Public Sector",
+      subtitle: "Workforce Development",
       description:
-        "Specialized training for public safety, infrastructure inspection, and emergency response.",
-      audience: "Public Agencies",
-      color: "#0066cc",
+        "State agencies and public institutions focused on economic development and youth employment. We deliver measurable outcomes and placement results.",
+      audience: "🏛️ Public Partners",
+      color: "#06b6d4",
+      badge: "Data-Driven Results",
     },
   ];
 
@@ -65,7 +89,7 @@ const WhoWeServe = () => {
             WHO WE SERVE
           </span>
           <h2 className="display-4 fw-bold mb-3 gradient-text">
-            Our Community
+            Building a Workforce Pipeline
           </h2>
           <p
             className="lead"
@@ -75,7 +99,8 @@ const WhoWeServe = () => {
               margin: "0 auto",
             }}
           >
-            Empowering diverse groups to achieve their drone career goals
+            We bring together motivated youth, employers, and community partners
+            to create lasting economic mobility in the Mid-South.
           </p>
         </motion.div>
 
@@ -83,17 +108,19 @@ const WhoWeServe = () => {
           {audiences.map((audience, index) => (
             <motion.div
               key={index}
-              className="col-lg-3 col-md-6"
+              className="col-lg-4 col-md-6"
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+              transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
             >
               <div
-                className="glass p-4 text-center"
+                className="glass p-4"
                 style={{
                   borderRadius: "20px",
                   height: "100%",
                   transition: "all 0.3s ease",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.transform = "translateY(-5px)")
@@ -102,22 +129,40 @@ const WhoWeServe = () => {
                   (e.currentTarget.style.transform = "translateY(0)")
                 }
               >
+                {/* Badge */}
                 <div
                   style={{
-                    width: "80px",
-                    height: "80px",
-                    margin: "0 auto 20px",
+                    position: "absolute",
+                    top: "20px",
+                    right: "20px",
                     background: `linear-gradient(135deg, ${audience.color}, var(--accent))`,
-                    borderRadius: "50%",
+                    padding: "4px 12px",
+                    borderRadius: "50px",
+                    fontSize: "10px",
+                    fontWeight: "600",
+                    color: "white",
+                  }}
+                >
+                  {audience.badge}
+                </div>
+
+                <div
+                  style={{
+                    width: "70px",
+                    height: "70px",
+                    marginBottom: "20px",
+                    background: `linear-gradient(135deg, ${audience.color}, var(--accent))`,
+                    borderRadius: "16px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "36px",
+                    fontSize: "32px",
                     color: "white",
                   }}
                 >
                   {audience.icon}
                 </div>
+
                 <h4
                   style={{ marginBottom: "5px", color: "var(--text-primary)" }}
                 >
@@ -128,54 +173,66 @@ const WhoWeServe = () => {
                     color: "var(--accent)",
                     fontSize: "12px",
                     fontWeight: "600",
-                    marginBottom: "10px",
+                    marginBottom: "12px",
                   }}
                 >
-                  {audience.audience}
+                  {audience.subtitle}
                 </p>
                 <p
                   style={{
                     color: "var(--text-secondary)",
                     fontSize: "14px",
                     lineHeight: "1.6",
+                    marginBottom: "15px",
                   }}
                 >
                   {audience.description}
                 </p>
+                <div
+                  style={{
+                    display: "inline-block",
+                    background: "rgba(var(--accent-rgb), 0.1)",
+                    padding: "5px 12px",
+                    borderRadius: "20px",
+                    fontSize: "11px",
+                    fontWeight: "500",
+                    color: "var(--accent)",
+                  }}
+                >
+                  {audience.audience}
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Trust Badge Section */}
+        {/* Regional Focus Note */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="glass mt-5 p-4 text-center"
-          style={{ borderRadius: "20px" }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          style={{
+            marginTop: "40px",
+            textAlign: "center",
+            padding: "20px",
+            background: "rgba(var(--accent-rgb), 0.05)",
+            borderRadius: "16px",
+            border: "1px solid var(--border-color)",
+          }}
         >
-          <div
+          <p
             style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "30px",
-              flexWrap: "wrap",
+              margin: 0,
+              fontSize: "14px",
+              color: "var(--text-secondary)",
             }}
           >
-            <span style={{ color: "var(--text-primary)" }}>
-              🏆 Best Drone Training 2024
-            </span>
-            <span style={{ color: "var(--text-primary)" }}>
-              ⭐ 4.9/5 Student Rating
-            </span>
-            <span style={{ color: "var(--text-primary)" }}>
-              🇺🇸 Nationally Recognized
-            </span>
-            <span style={{ color: "var(--text-primary)" }}>
-              ✅ FAA Part 107 Certified
-            </span>
-          </div>
+            <span style={{ fontWeight: "bold", color: "var(--accent)" }}>
+              📍 Regional Focus:
+            </span>{" "}
+            Serving Arkansas • Mississippi • Tennessee — the heart of the
+            Mid-South
+          </p>
         </motion.div>
       </div>
     </section>
