@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaCheckCircle,
-  FaExclamationCircle,
-  FaClipboardList,
-  FaSignature,
-  FaSpinner,
-} from "react-icons/fa";
+import { FaArrowLeft, FaSignature, FaSpinner } from "react-icons/fa";
 
 const Step3CommitmentPledge = ({
   formData,

@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaCheckCircle,
-  FaExclamationCircle,
-  FaClipboardList,
-  FaCalculator,
-} from "react-icons/fa";
+import { FaArrowLeft, FaClipboardList, FaCalculator } from "react-icons/fa";
 
 const Step2ScreeningRubric = ({
   formData,
@@ -19,7 +12,7 @@ const Step2ScreeningRubric = ({
   onBack,
 }) => {
   const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
+  // const [touched, setTouched] = useState({});
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -36,10 +29,10 @@ const Step2ScreeningRubric = ({
     }
   };
 
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    setTouched({ ...touched, [name]: true });
-  };
+  // const handleBlur = (e) => {
+  //   const { name } = e.target;
+  //   setTouched({ ...touched, [name]: true });
+  // };
 
   // Calculate scores based on selections
   const calculateScores = () => {

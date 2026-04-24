@@ -4,7 +4,6 @@ import {
   FaTimes,
   FaCheckCircle,
   FaCalendarAlt,
-  FaChartLine,
   FaSpinner,
 } from "react-icons/fa";
 import axios from "axios";
@@ -16,52 +15,15 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
   const [saving, setSaving] = useState(false);
   const [localResponses, setLocalResponses] = useState({});
   const [localScores, setLocalScores] = useState({});
-  const [localDates, setLocalDates] = useState({});
   const [savingFields, setSavingFields] = useState({});
   const debounceTimerRef = useRef({});
   const isMountedRef = useRef(true);
 
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-      Object.keys(debounceTimerRef.current).forEach((key) => {
-        if (debounceTimerRef.current[key]) {
-          clearTimeout(debounceTimerRef.current[key]);
-        }
-      });
-    };
-  }, []);
+  // Helper to check if a specific field is saving
+  const isFieldSaving = (key) => savingFields[key] || saving;
 
-  useEffect(() => {
-    if (isOpen && user) {
-      fetchOnboardingData();
-    }
-  }, [isOpen, user]);
-
-  useEffect(() => {
-    if (onboardingData?.onboarding?.accountability) {
-      const responses = {};
-      Object.keys(onboardingData.onboarding.accountability).forEach((key) => {
-        responses[key] =
-          onboardingData.onboarding.accountability[key]?.response || "";
-      });
-      setLocalResponses(responses);
-    }
-    // Initialize local scores from fetched data
-    if (onboardingData?.onboarding?.phase4) {
-      setLocalScores({
-        practiceExam1Score:
-          onboardingData.onboarding.phase4.practiceExam1Score || 0,
-        practiceExam2Score:
-          onboardingData.onboarding.phase4.practiceExam2Score || 0,
-        practiceExam3Score:
-          onboardingData.onboarding.phase4.practiceExam3Score || 0,
-      });
-    }
-  }, [onboardingData]);
-
-  const fetchOnboardingData = async () => {
+  // ✅ FIRST: Define fetchOnboardingData before any hooks that use it
+  const fetchOnboardingData = useCallback(async () => {
     try {
       setLoading(true);
       const userId = user?.id || user?._id;
@@ -89,7 +51,48 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
         setLoading(false);
       }
     }
-  };
+  }, [user, token]);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      const timers = debounceTimerRef.current;
+      Object.keys(timers).forEach((key) => {
+        if (timers[key]) {
+          clearTimeout(timers[key]);
+        }
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isOpen && user) {
+      fetchOnboardingData();
+    }
+  }, [isOpen, user, fetchOnboardingData]);
+
+  useEffect(() => {
+    if (onboardingData?.onboarding?.accountability) {
+      const responses = {};
+      Object.keys(onboardingData.onboarding.accountability).forEach((key) => {
+        responses[key] =
+          onboardingData.onboarding.accountability[key]?.response || "";
+      });
+      setLocalResponses(responses);
+    }
+    // Initialize local scores from fetched data
+    if (onboardingData?.onboarding?.phase4) {
+      setLocalScores({
+        practiceExam1Score:
+          onboardingData.onboarding.phase4.practiceExam1Score || 0,
+        practiceExam2Score:
+          onboardingData.onboarding.phase4.practiceExam2Score || 0,
+        practiceExam3Score:
+          onboardingData.onboarding.phase4.practiceExam3Score || 0,
+      });
+    }
+  }, [onboardingData]);
 
   // Debounced update for text/date fields
   const debouncedUpdate = useCallback(
@@ -139,7 +142,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
         isDateField ? 1000 : 800,
       );
     },
-    [user, token],
+    [user, token, fetchOnboardingData],
   );
 
   const updateCheckbox = async (phase, field, value) => {
@@ -302,7 +305,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
         1000,
       );
     },
-    [onboardingData, user, token],
+    [onboardingData, user, token, fetchOnboardingData],
   );
 
   const updateFinalOutcome = async (field, value) => {
@@ -353,9 +356,6 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
     if (!onboardingData) return 0;
     return onboardingData.progressPercentage || 0;
   };
-
-  // Helper to check if a specific field is saving
-  const isFieldSaving = (key) => savingFields[key] || saving;
 
   if (!isOpen) return null;
 
@@ -500,7 +500,6 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
                       )[0] || ""
                     }
                     onChange={(e) => {
-                      // Update local state immediately
                       setOnboardingData((prev) => ({
                         ...prev,
                         onboarding: {

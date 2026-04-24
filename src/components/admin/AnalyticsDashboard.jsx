@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -10,13 +10,7 @@ import {
   FaChartLine,
   FaAward,
   FaSpinner,
-  FaCalendarAlt,
-  FaGraduationCap,
   FaClipboardList,
-  FaTachometerAlt,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaHourglassHalf,
 } from "react-icons/fa";
 import {
   BarChart,
@@ -24,8 +18,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -39,11 +31,7 @@ const AnalyticsDashboard = ({ token }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(
@@ -60,7 +48,11 @@ const AnalyticsDashboard = ({ token }) => {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -104,16 +96,6 @@ const AnalyticsDashboard = ({ token }) => {
     goal,
   } = dashboardData;
 
-  // Colors for charts
-  const COLORS = [
-    "#3b82f6",
-    "#10b981",
-    "#f59e0b",
-    "#ef4444",
-    "#8b5cf6",
-    "#06b6d4",
-  ];
-
   // Prepare pie chart data for exam results
   const examPieData = [
     { name: "PASSED", value: examResults.passed, color: "#10b981" },
@@ -121,34 +103,6 @@ const AnalyticsDashboard = ({ token }) => {
     { name: "NOT YET", value: examResults.notYet, color: "#6b7280" },
     { name: "FAILED", value: examResults.failed, color: "#ef4444" },
   ].filter((item) => item.value > 0);
-
-  // Prepare data for screening analysis chart
-  const screeningChartData = [
-    {
-      metric: "Sec 1: Basic (/3)",
-      avg: screeningAnalysis.section1.avg,
-      max: screeningAnalysis.section1.max,
-      min: screeningAnalysis.section1.min,
-    },
-    {
-      metric: "Sec 2: Tech (/3)",
-      avg: screeningAnalysis.section2.avg,
-      max: screeningAnalysis.section2.max,
-      min: screeningAnalysis.section2.min,
-    },
-    {
-      metric: "Sec 3: Avail (/4)",
-      avg: screeningAnalysis.section3.avg,
-      max: screeningAnalysis.section3.max,
-      min: screeningAnalysis.section3.min,
-    },
-    {
-      metric: "Sec 4: Motiv (/6)",
-      avg: screeningAnalysis.section4.avg,
-      max: screeningAnalysis.section4.max,
-      min: screeningAnalysis.section4.min,
-    },
-  ];
 
   // Prepare practice exam data for chart
   const practiceExamChartData = [
