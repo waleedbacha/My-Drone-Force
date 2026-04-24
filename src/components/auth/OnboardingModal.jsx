@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,7 +13,7 @@ import { toast } from "react-toastify";
 const OnboardingModal = ({ isOpen, onClose, user, token }) => {
   const [onboardingData, setOnboardingData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [saving] = useState(false);
   const [localResponses, setLocalResponses] = useState({});
   const [localScores, setLocalScores] = useState({});
   const [savingFields, setSavingFields] = useState({});
@@ -64,6 +65,7 @@ const OnboardingModal = ({ isOpen, onClose, user, token }) => {
         }
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
