@@ -11,12 +11,14 @@ import {
   FaCalendarCheck,
   FaClipboardList,
   FaChartLine,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 import OnboardingModal from "../auth/OnboardingModal";
 import ExportToExcel from "./ExportToExcel";
 import API_URL from "../config/api";
+import generateAgreementPDF from "./AgreementPDF";
 
 const UsersTable = ({ users, loading, fetchUsers, token }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,12 +27,73 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
   const [showOnboardingModal, setShowOnboardingModal] = useState(false);
   const [activeTab, setActiveTab] = useState("basic");
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
+
+  // Filter users based on search
   const filteredUsers = users.filter(
     (user) =>
       user.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+  console.log("Total users from props:", users.length);
+  console.log("Filtered users:", filteredUsers.length);
+  console.log("Search term:", searchTerm);
+
+  // Pagination calculations
+  const totalUsers = filteredUsers.length;
+  const totalPages = Math.ceil(totalUsers / usersPerPage);
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Reset to page 1 when search term changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  // Pagination handlers
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 5;
+
+    if (totalPages <= maxPagesToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+      if (endPage - startPage < maxPagesToShow - 1) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+    }
+    return pageNumbers;
+  };
 
   const handleDelete = async (userId, userName) => {
     if (window.confirm(`Are you sure you want to delete ${userName}?`)) {
@@ -43,133 +106,6 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
       } catch (error) {
         toast.error("Failed to delete user");
       }
-    }
-  };
-
-  const downloadAgreementPDF = async (user) => {
-    try {
-      const doc = new jsPDF();
-
-      const response = await axios.get(
-        `${API_URL}/api/admin/users/${user._id}/agreement`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      const agreement = response.data.agreement;
-
-      // PDF Header
-      doc.setFillColor(0, 102, 204);
-      doc.rect(0, 0, 210, 40, "F");
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(22);
-      doc.text("My Drone Force", 105, 20, { align: "center" });
-      doc.setFontSize(14);
-      doc.text("Candidate Commitment Agreement", 105, 35, { align: "center" });
-
-      // Student Information
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(12);
-      doc.text(`Student Name: ${user.firstName} ${user.lastName}`, 20, 60);
-      doc.text(`Email: ${user.email}`, 20, 70);
-      doc.text(`Phone: ${user.phone}`, 20, 80);
-      doc.text(`Course: ${user.courseInterest}`, 20, 90);
-      doc.text(
-        `Registration Date: ${new Date(user.createdAt).toLocaleDateString()}`,
-        20,
-        100,
-      );
-
-      // Onboarding Verification
-      doc.setFontSize(14);
-      doc.setTextColor(0, 102, 204);
-      doc.text("Onboarding Verification", 20, 120);
-      doc.setFontSize(11);
-      doc.setTextColor(0, 0, 0);
-      doc.text(
-        `✓ English Language Proficiency: ${user.englishProficiency ? "Yes" : "No"}`,
-        25,
-        135,
-      );
-      doc.text(
-        `✓ Program Commitment: ${user.programCommitment ? "Yes" : "No"}`,
-        25,
-        145,
-      );
-      doc.text(
-        `✓ Technology Access: ${user.techAccess ? "Yes" : "No"}`,
-        25,
-        155,
-      );
-
-      // Commitment Agreements
-      doc.setFontSize(14);
-      doc.setTextColor(0, 102, 204);
-      doc.text("Commitment Agreements", 20, 180);
-      doc.setFontSize(11);
-      doc.setTextColor(0, 0, 0);
-
-      const commitments = user.commitmentAgreements || [];
-      let yPos = 195;
-      commitments.forEach((commitment, index) => {
-        doc.text(`☑ ${commitment}`, 25, yPos);
-        yPos += 10;
-        if (yPos > 270) {
-          doc.addPage();
-          yPos = 20;
-        }
-      });
-
-      // Signature Section
-      if (yPos > 250) {
-        doc.addPage();
-        yPos = 20;
-      } else {
-        yPos += 10;
-      }
-
-      doc.setFontSize(14);
-      doc.setTextColor(0, 102, 204);
-      doc.text("Signature & Acknowledgment", 20, yPos);
-      yPos += 15;
-
-      doc.setFontSize(11);
-      doc.setTextColor(0, 0, 0);
-      doc.text(
-        `Electronic Signature: ${user.electronicSignature || "N/A"}`,
-        25,
-        yPos,
-      );
-      yPos += 10;
-      doc.text(
-        `Signature Date: ${user.signatureDate ? new Date(user.signatureDate).toLocaleDateString() : "N/A"}`,
-        25,
-        yPos,
-      );
-      yPos += 10;
-      doc.text(`Printed Name: ${user.printedName || "N/A"}`, 25, yPos);
-      yPos += 10;
-
-      if (agreement?.ipAddress) {
-        doc.text(`IP Address: ${agreement.ipAddress}`, 25, yPos);
-        yPos += 10;
-      }
-
-      doc.setFontSize(10);
-      doc.setTextColor(100, 100, 100);
-      doc.text(
-        "This document serves as a legally binding agreement between the candidate and My Drone Force.",
-        20,
-        yPos + 20,
-      );
-      doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, yPos + 30);
-
-      // Save PDF
-      doc.save(`${user.firstName}_${user.lastName}_Agreement.pdf`);
-      toast.success("Agreement PDF downloaded");
-    } catch (error) {
-      console.error("PDF generation error:", error);
-      toast.error("Failed to generate PDF");
     }
   };
 
@@ -221,7 +157,7 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
               />
             </div>
 
-            {/* NEW Export Button - Replaces the old one */}
+            {/* Export Button */}
             <ExportToExcel users={filteredUsers} token={token} />
           </div>
         </div>
@@ -314,7 +250,7 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((user) => (
+              {currentUsers.map((user) => (
                 <tr
                   key={user._id}
                   style={{ borderBottom: "1px solid var(--border-color)" }}
@@ -435,7 +371,7 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
                       <FaEye />
                     </button>
                     <button
-                      onClick={() => downloadAgreementPDF(user)}
+                      onClick={() => generateAgreementPDF(user, token)}
                       style={{
                         background: "none",
                         border: "none",
@@ -470,6 +406,95 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "8px",
+              marginTop: "20px",
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              onClick={goToPrevPage}
+              disabled={currentPage === 1}
+              style={{
+                padding: "8px 12px",
+                borderRadius: "8px",
+                border: "1px solid var(--border-color)",
+                background: "var(--card-bg)",
+                color:
+                  currentPage === 1
+                    ? "var(--text-secondary)"
+                    : "var(--text-primary)",
+                cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                opacity: currentPage === 1 ? 0.5 : 1,
+              }}
+            >
+              <FaChevronLeft /> Previous
+            </button>
+
+            {getPageNumbers().map((pageNum) => (
+              <button
+                key={pageNum}
+                onClick={() => goToPage(pageNum)}
+                style={{
+                  padding: "8px 14px",
+                  borderRadius: "8px",
+                  border: "1px solid var(--border-color)",
+                  background:
+                    currentPage === pageNum
+                      ? "var(--gradient)"
+                      : "var(--card-bg)",
+                  color:
+                    currentPage === pageNum ? "white" : "var(--text-primary)",
+                  cursor: "pointer",
+                  fontWeight: currentPage === pageNum ? "bold" : "normal",
+                }}
+              >
+                {pageNum}
+              </button>
+            ))}
+
+            <button
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
+              style={{
+                padding: "8px 12px",
+                borderRadius: "8px",
+                border: "1px solid var(--border-color)",
+                background: "var(--card-bg)",
+                color:
+                  currentPage === totalPages
+                    ? "var(--text-secondary)"
+                    : "var(--text-primary)",
+                cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                opacity: currentPage === totalPages ? 0.5 : 1,
+              }}
+            >
+              Next <FaChevronRight />
+            </button>
+          </div>
+        )}
+
+        {/* Showing info */}
+        {totalUsers > 0 && (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "15px",
+              fontSize: "12px",
+              color: "var(--text-secondary)",
+            }}
+          >
+            Showing {indexOfFirstUser + 1} to{" "}
+            {Math.min(indexOfLastUser, totalUsers)} of {totalUsers} users
+          </div>
+        )}
 
         {filteredUsers.length === 0 && (
           <div
@@ -904,7 +929,7 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
                     )}
                   </div>
                   <button
-                    onClick={() => downloadAgreementPDF(selectedUser)}
+                    onClick={() => generateAgreementPDF(selectedUser, token)}
                     className="btn-primary-custom"
                     style={{
                       marginTop: "20px",

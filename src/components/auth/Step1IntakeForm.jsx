@@ -1138,6 +1138,30 @@ const Step1IntakeForm = ({ formData, setFormData, isSubmitting, onSubmit }) => {
         >
           {isSubmitting ? "Processing..." : "Continue to Screening →"}
         </motion.button>
+        {/* Back to Home Link */}
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
+          <button
+            type="button"
+            onClick={() => (window.location.href = "/")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "var(--text-secondary)",
+              cursor: "pointer",
+              fontSize: "14px",
+              textDecoration: "none",
+              transition: "color 0.3s ease",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = "var(--accent)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "var(--text-secondary)")
+            }
+          >
+            ← Back to Home
+          </button>
+        </div>
       </form>
     </motion.div>
   );

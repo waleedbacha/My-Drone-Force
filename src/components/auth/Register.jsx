@@ -357,6 +357,7 @@ const Register = () => {
                 isSubmitting={isSubmitting}
                 onSubmit={handleStep2Submit}
                 screeningResult={screeningResult}
+                onBack={() => setCurrentStep(1)}
               />
             )}
 
@@ -367,6 +368,7 @@ const Register = () => {
                 isSubmitting={isSubmitting}
                 onSubmit={handleStep3Submit}
                 userInfo={step1Data}
+                onBack={() => setCurrentStep(2)}
               />
             )}
           </div>

@@ -34,7 +34,7 @@ import TrendComparisonChart from "./TrendComparisonChart";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 import droneLogo from "../../assests/images/white.png";
 import API_URL from "../config/api";
-
+import RegionDistributionChart from "./RegionDistributionChart";
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -84,13 +84,16 @@ const AdminDashboard = () => {
       console.error("Error fetching stats:", error);
     }
   };
-
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(`${API_URL}/api/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${API_URL}/api/admin/users?limit=1000`,
+        {
+          // ← ADD ?limit=1000
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       setUsers(response.data.users);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -102,9 +105,13 @@ const AdminDashboard = () => {
   const fetchUsersForMap = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(`${API_URL}/api/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${API_URL}/api/admin/users?limit=1000`,
+        {
+          // ← ADD ?limit=1000
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       setUserLocationData(response.data.users);
     } catch (error) {
       console.error("Error fetching users for map:", error);
@@ -524,7 +531,7 @@ const AdminDashboard = () => {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-
+              {/* <LocationCharts token={localStorage.getItem("adminToken")} /> */}
               {/* Course Distribution */}
               <div
                 className="glass"
@@ -575,6 +582,11 @@ const AdminDashboard = () => {
                 </ResponsiveContainer>
               </div>
             </div>
+
+            {/* Region Distribution Chart */}
+            <RegionDistributionChart
+              token={localStorage.getItem("adminToken")}
+            />
 
             {/* Geographic Heat Map */}
             <div

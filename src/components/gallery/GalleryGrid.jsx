@@ -6,12 +6,12 @@ import CategoryFilter from "./CategoryFilter";
 import { FaPlay, FaTimes } from "react-icons/fa";
 
 // Import your local images
-import training1 from "../../assests/images/gallery/drone1.jpg";
-import training2 from "../../assests/images/gallery/drone2.jpg";
-import pilot1 from "../../assests/images/gallery/drone3.jpg";
+import training1 from "../../assests/images/gallery/drone_7.png";
+import training2 from "../../assests/images/gallery/drone_8.png";
+import pilot1 from "../../assests/images/gallery/drone10.png";
 import aerial1 from "../../assests/images/gallery/drone4.jpg";
 import event1 from "../../assests/images/gallery/drone5.jpg";
-import tech1 from "../../assests/images/gallery/drone1.jpg";
+import tech1 from "../../assests/images/gallery/drone_9.png";
 
 // Import TCB Drones Partnership Images
 import tcb1 from "../../assests/images/gallery/partnership.jpeg";
