@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { FaEnvelope, FaLock, FaArrowRight, FaShieldAlt } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaArrowRight } from "react-icons/fa";
 import API_URL from "../config/api";
+import whiteLogo from "../../assests/images/white.png";
+import darkLogo from "../../assests/images/drone_logo2.png";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -15,6 +17,22 @@ const AdminLogin = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Get current theme
+  const [theme, setTheme] = useState(() => {
+    return document.documentElement.getAttribute("data-theme") || "dark";
+  });
+
+  // Listen for theme changes
+  React.useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "dark";
+      setTheme(currentTheme);
+    });
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
 
   // Check if already logged in
   React.useEffect(() => {
@@ -52,6 +70,9 @@ const AdminLogin = () => {
     }
   };
 
+  // Choose logo based on theme
+  const logoSrc = theme === "dark" ? whiteLogo : darkLogo;
+
   return (
     <div
       style={{
@@ -78,21 +99,27 @@ const AdminLogin = () => {
           background: "var(--card-bg)",
         }}
       >
-        {/* Header */}
+        {/* Header with Logo */}
         <div className="text-center mb-4">
           <div
             style={{
-              width: "70px",
-              height: "70px",
+              width: "80px",
+              height: "80px",
               margin: "0 auto 20px",
-              background: "var(--gradient)",
-              borderRadius: "50%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <FaShieldAlt size={35} color="white" />
+            <img
+              src={logoSrc}
+              alt="My Drone Force"
+              style={{
+                width: "400%",
+                height: "400%",
+                objectFit: "contain",
+              }}
+            />
           </div>
           <h2
             style={{
@@ -215,32 +242,6 @@ const AdminLogin = () => {
             {!isLoading && <FaArrowRight style={{ marginLeft: "8px" }} />}
           </motion.button>
         </form>
-
-        {/* Demo Credentials */}
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "15px",
-            background: "rgba(var(--accent-rgb), 0.1)",
-            borderRadius: "12px",
-            textAlign: "center",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "12px",
-              color: "var(--text-secondary)",
-              marginBottom: "5px",
-            }}
-          >
-            Demo Credentials:
-          </p>
-          <p style={{ fontSize: "12px", color: "var(--accent)" }}>
-            Email: admin@mydroneforce.com
-            <br />
-            Password: Admin@123
-          </p>
-        </div>
       </motion.div>
     </div>
   );
