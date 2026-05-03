@@ -72,7 +72,7 @@ const VideoIntro = ({ onComplete }) => {
           >
             <video
               ref={videoRef}
-              src="/videos/my-drone-force-video.mp4"
+              src="/videos/my-drone-force-video-4k.mp4"
               autoPlay
               muted={isMuted}
               playsInline
