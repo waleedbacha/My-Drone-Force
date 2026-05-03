@@ -72,7 +72,7 @@ const VideoIntro = ({ onComplete }) => {
           >
             <video
               ref={videoRef}
-              src="/videos/my-drone-force-video-4K.mp4"
+              src="https://res.cloudinary.com/dcjhzgigb/video/upload/my-drone-force-video-4k_pdqeek.mp4"
               autoPlay
               muted={isMuted}
               playsInline
