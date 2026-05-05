@@ -27,6 +27,7 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import MidSouthAdvantage from "./components/home/MidSouthAdvantage";
 // import SuccessPipeline from "./components/home/SuccessPipeline";
 import SegmentedCTASection from "./components/home/SegmentedCTASection";
+import EventsPage from "./components/events/EventsPage";
 
 // Component to conditionally show Navbar and Footer
 const Layout = ({ children, toggleTheme, theme }) => {
@@ -127,6 +128,14 @@ function App() {
             element={
               <Layout toggleTheme={toggleTheme} theme={theme}>
                 <CareersPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/events"
+            element={
+              <Layout toggleTheme={toggleTheme} theme={theme}>
+                <EventsPage />
               </Layout>
             }
           />

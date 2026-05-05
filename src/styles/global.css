@@ -573,3 +573,14 @@ body.modal-open {
     transform: rotate(360deg);
   }
 }
+/* Add to global.css */
+/* .register-page {
+  padding-top: 100px;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .register-page {
+    padding-top: 80px;
+  }
+} */

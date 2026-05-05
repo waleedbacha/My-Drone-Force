@@ -217,6 +217,7 @@ const Register = () => {
 
   return (
     <>
+      {/* <div className="register-page"> */}
       <ToastContainer position="top-right" theme="dark" />
       <div
         className="register-page"
@@ -374,6 +375,7 @@ const Register = () => {
           </div>
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 };

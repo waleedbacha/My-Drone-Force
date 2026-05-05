@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { GiDeliveryDrone } from "react-icons/gi";
 import {
   FaFacebook,
@@ -9,18 +10,20 @@ import {
   FaPhone,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import { Link } from "react-scroll";
+// import { Link } from "react-scroll";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
   const quickLinks = [
-    { name: "Home", to: "home" },
-    { name: "About", to: "about" },
-    { name: "Careers", to: "careers" },
-    { name: "Gallery", to: "gallery" },
-    { name: "Testimonials", to: "testimonials" },
-    { name: "Contact", to: "contact" },
+    { name: "Home", to: "home", isRoute: false },
+    { name: "About", to: "about", isRoute: false },
+    { name: "Careers", to: "careers", isRoute: false },
+    { name: "Events", to: "/events", isRoute: true },
+    { name: "Gallery", to: "gallery", isRoute: false },
+    { name: "Testimonials", to: "testimonials", isRoute: false },
+    { name: "Contact", to: "contact", isRoute: false },
   ];
 
   const socialLinks = [
@@ -45,6 +48,35 @@ const Footer = () => {
       label: "Instagram",
     },
   ];
+
+  const handleNavigation = (link) => {
+    if (link.isRoute) {
+      navigate(link.to);
+    } else {
+      // Handle scroll to section
+      if (window.location.pathname !== "/") {
+        navigate("/");
+        setTimeout(() => {
+          const element = document.getElementById(link.to);
+          if (element) {
+            const offset = 70;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.pageYOffset - offset;
+            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+          }
+        }, 150);
+      } else {
+        const element = document.getElementById(link.to);
+        if (element) {
+          const offset = 70;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+      }
+    }
+  };
 
   return (
     <footer
@@ -147,17 +179,18 @@ const Footer = () => {
             >
               {quickLinks.map((link, index) => (
                 <li key={index} style={{ marginBottom: "10px" }}>
-                  <Link
-                    to={link.to}
-                    smooth={true}
-                    duration={500}
-                    offset={-70}
+                  <button
+                    onClick={() => handleNavigation(link)}
                     style={{
                       color: "var(--text-secondary)",
                       textDecoration: "none",
                       fontSize: "14px",
                       transition: "color 0.3s ease",
                       cursor: "pointer",
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      fontFamily: "inherit",
                     }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.color = "var(--accent)")
@@ -167,7 +200,7 @@ const Footer = () => {
                     }
                   >
                     {link.name}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>

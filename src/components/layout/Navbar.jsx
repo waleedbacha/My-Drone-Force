@@ -75,12 +75,13 @@ const Navbar = ({ toggleTheme, theme }) => {
   };
 
   const navItems = [
-    { name: "Home", to: "home" },
-    { name: "About", to: "about" },
-    { name: "Gallery", to: "gallery" },
-    { name: "Careers", to: "careers" },
-    { name: "Testimonials", to: "testimonials" },
-    { name: "Contact", to: "contact" },
+    { name: "Home", to: "home", isRoute: false },
+    { name: "About", to: "about", isRoute: false },
+    { name: "Gallery", to: "gallery", isRoute: false },
+    { name: "Careers", to: "careers", isRoute: false },
+    { name: "Events", to: "/events", isRoute: true },
+    { name: "Testimonials", to: "testimonials", isRoute: false },
+    { name: "Contact", to: "contact", isRoute: false },
   ];
 
   const handleLogoClick = () => {
@@ -95,10 +96,18 @@ const Navbar = ({ toggleTheme, theme }) => {
     setIsOpen(false);
   };
 
-  const handleNavClick = (sectionId) => {
+  const handleNavClick = (item) => {
     setIsOpen(false);
-    // Reset body overflow
     document.body.style.overflow = "auto";
+
+    // If it's a route navigation (Events page)
+    if (item.isRoute) {
+      navigate(item.to);
+      return;
+    }
+
+    // Otherwise handle scroll to section
+    const sectionId = item.to;
 
     if (window.location.pathname === "/") {
       const element = document.getElementById(sectionId);
@@ -209,7 +218,7 @@ const Navbar = ({ toggleTheme, theme }) => {
             {navItems.map((item, index) => (
               <button
                 key={index}
-                onClick={() => handleNavClick(item.to)}
+                onClick={() => handleNavClick(item)}
                 style={{
                   color: "var(--text-primary)",
                   cursor: "pointer",
@@ -247,7 +256,7 @@ const Navbar = ({ toggleTheme, theme }) => {
               {theme === "light" ? <FaMoon /> : <FaSun />}
             </button>
 
-            {/* ✅ UPDATED: Enroll Now button navigates to /register */}
+            {/* Enroll Now button navigates to /register */}
             <button
               onClick={handleEnrollClick}
               className="btn-primary-custom"
@@ -279,7 +288,7 @@ const Navbar = ({ toggleTheme, theme }) => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu - FIXED SMOOTH ANIMATION */}
+      {/* Mobile Dropdown Menu */}
       <AnimatePresence mode="wait">
         {isOpen && windowWidth < 992 && (
           <motion.div
@@ -311,7 +320,7 @@ const Navbar = ({ toggleTheme, theme }) => {
               {navItems.map((item, index) => (
                 <motion.button
                   key={index}
-                  onClick={() => handleNavClick(item.to)}
+                  onClick={() => handleNavClick(item)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
@@ -368,7 +377,7 @@ const Navbar = ({ toggleTheme, theme }) => {
                 )}
               </motion.button>
 
-              {/* ✅ UPDATED: Mobile Enroll Now button navigates to /register */}
+              {/* Mobile Enroll Now button navigates to /register */}
               <motion.button
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
