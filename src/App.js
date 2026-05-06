@@ -132,7 +132,7 @@ function App() {
             }
           />
           <Route
-            path="/events"
+            path="/upcoming-events"
             element={
               <Layout toggleTheme={toggleTheme} theme={theme}>
                 <EventsPage />
