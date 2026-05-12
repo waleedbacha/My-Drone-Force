@@ -13,6 +13,11 @@ import {
   FaChartLine,
   FaChevronLeft,
   FaChevronRight,
+  FaDollarSign,
+  FaCheckCircle,
+  FaHourglassHalf,
+  FaExclamationTriangle,
+  FaUndo,
 } from "react-icons/fa";
 import "jspdf-autotable";
 import OnboardingModal from "../auth/OnboardingModal";
@@ -38,9 +43,6 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
       user.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
-  console.log("Total users from props:", users.length);
-  console.log("Filtered users:", filteredUsers.length);
-  console.log("Search term:", searchTerm);
 
   // Pagination calculations
   const totalUsers = filteredUsers.length;
@@ -93,6 +95,55 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
       }
     }
     return pageNumbers;
+  };
+
+  // Helper function to get payment status badge
+  const getPaymentStatusBadge = (paymentStatus) => {
+    switch (paymentStatus) {
+      case "completed":
+        return {
+          text: "Paid",
+          icon: <FaCheckCircle size={12} style={{ marginRight: "4px" }} />,
+          color: "#10b981",
+          bg: "rgba(16, 185, 129, 0.15)",
+        };
+      case "pending":
+        return {
+          text: "Pending",
+          icon: <FaHourglassHalf size={12} style={{ marginRight: "4px" }} />,
+          color: "#f59e0b",
+          bg: "rgba(245, 158, 11, 0.15)",
+        };
+      case "failed":
+        return {
+          text: "Failed",
+          icon: (
+            <FaExclamationTriangle size={12} style={{ marginRight: "4px" }} />
+          ),
+          color: "#ef4444",
+          bg: "rgba(239, 68, 68, 0.15)",
+        };
+      case "refunded":
+        return {
+          text: "Refunded",
+          icon: <FaUndo size={12} style={{ marginRight: "4px" }} />,
+          color: "#6b7280",
+          bg: "rgba(107, 114, 128, 0.15)",
+        };
+      default:
+        return {
+          text: "Not Started",
+          icon: <FaDollarSign size={12} style={{ marginRight: "4px" }} />,
+          color: "#6b7280",
+          bg: "rgba(107, 114, 128, 0.1)",
+        };
+    }
+  };
+
+  // Helper function to format currency
+  const formatCurrency = (amount) => {
+    if (!amount) return "$0";
+    return `$${amount.toLocaleString()}`;
   };
 
   const handleDelete = async (userId, userName) => {
@@ -237,6 +288,17 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
                 >
                   Signed
                 </th>
+                {/* NEW: Payment Column */}
+                <th
+                  style={{
+                    padding: "12px",
+                    textAlign: "left",
+                    color: "var(--text-secondary)",
+                    fontSize: "13px",
+                  }}
+                >
+                  Payment
+                </th>
                 <th
                   style={{
                     padding: "12px",
@@ -250,159 +312,199 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
               </tr>
             </thead>
             <tbody>
-              {currentUsers.map((user) => (
-                <tr
-                  key={user._id}
-                  style={{ borderBottom: "1px solid var(--border-color)" }}
-                >
-                  <td style={{ padding: "12px" }}>
-                    <div
+              {currentUsers.map((user) => {
+                const paymentBadge = getPaymentStatusBadge(user.paymentStatus);
+                return (
+                  <tr
+                    key={user._id}
+                    style={{ borderBottom: "1px solid var(--border-color)" }}
+                  >
+                    <td style={{ padding: "12px" }}>
+                      <div
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          background: "var(--gradient)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {user.profileImage ? (
+                          <img
+                            src={user.profileImage}
+                            alt=""
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              const parent = e.target.parentElement;
+                              if (parent) {
+                                parent.innerHTML = `<span style="color: white; font-weight: bold;">${user.firstName?.charAt(0)}${user.lastName?.charAt(0)}</span>`;
+                              }
+                            }}
+                          />
+                        ) : (
+                          <span style={{ color: "white", fontWeight: "bold" }}>
+                            {user.firstName?.charAt(0)}
+                            {user.lastName?.charAt(0)}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td
+                      style={{ padding: "12px", color: "var(--text-primary)" }}
+                    >
+                      {user.firstName} {user.lastName}
+                    </td>
+                    <td
                       style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                        background: "var(--gradient)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        overflow: "hidden",
+                        padding: "12px",
+                        color: "var(--text-secondary)",
                       }}
                     >
-                      {user.profileImage ? (
-                        <img
-                          src={user.profileImage}
-                          alt=""
+                      {user.email}
+                    </td>
+                    <td
+                      style={{
+                        padding: "12px",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      {user.phone}
+                    </td>
+                    <td
+                      style={{
+                        padding: "12px",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      {user.courseInterest}
+                    </td>
+                    <td style={{ padding: "12px" }}>
+                      <button
+                        onClick={() => {
+                          setSelectedUser(user);
+                          setShowOnboardingModal(true);
+                        }}
+                        className="btn-primary-custom"
+                        style={{
+                          padding: "6px 12px",
+                          fontSize: "12px",
+                          background: "var(--gradient)",
+                        }}
+                      >
+                        <FaChartLine style={{ marginRight: "5px" }} />
+                        View Checklist
+                      </button>
+                    </td>
+                    <td style={{ padding: "12px" }}>
+                      {user.electronicSignature ? (
+                        <span
                           style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
+                            color: "#10b981",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
                           }}
-                          onError={(e) => {
-                            e.target.style.display = "none";
-                            const parent = e.target.parentElement;
-                            if (parent) {
-                              parent.innerHTML = `<span style="color: white; font-weight: bold;">${user.firstName?.charAt(0)}${user.lastName?.charAt(0)}</span>`;
-                            }
-                          }}
-                        />
+                        >
+                          <FaSignature /> Signed
+                        </span>
                       ) : (
-                        <span style={{ color: "white", fontWeight: "bold" }}>
-                          {user.firstName?.charAt(0)}
-                          {user.lastName?.charAt(0)}
+                        <span
+                          style={{
+                            color: "#ef4444",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
+                          }}
+                        >
+                          <FaTimesCircle /> Not Signed
                         </span>
                       )}
-                    </div>
-                  </td>
-                  <td style={{ padding: "12px", color: "var(--text-primary)" }}>
-                    {user.firstName} {user.lastName}
-                  </td>
-                  <td
-                    style={{ padding: "12px", color: "var(--text-secondary)" }}
-                  >
-                    {user.email}
-                  </td>
-                  <td
-                    style={{ padding: "12px", color: "var(--text-secondary)" }}
-                  >
-                    {user.phone}
-                  </td>
-                  <td
-                    style={{ padding: "12px", color: "var(--text-secondary)" }}
-                  >
-                    {user.courseInterest}
-                  </td>
-                  <td style={{ padding: "12px" }}>
-                    <button
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setShowOnboardingModal(true);
-                      }}
-                      className="btn-primary-custom"
-                      style={{
-                        padding: "6px 12px",
-                        fontSize: "12px",
-                        background: "var(--gradient)",
-                      }}
-                    >
-                      <FaChartLine style={{ marginRight: "5px" }} />
-                      View Checklist
-                    </button>
-                  </td>
-                  <td style={{ padding: "12px" }}>
-                    {user.electronicSignature ? (
+                    </td>
+                    {/* NEW: Payment Status Column */}
+                    <td style={{ padding: "12px" }}>
                       <span
                         style={{
-                          color: "#10b981",
-                          display: "flex",
+                          display: "inline-flex",
                           alignItems: "center",
-                          gap: "5px",
+                          gap: "4px",
+                          padding: "4px 10px",
+                          borderRadius: "20px",
+                          fontSize: "11px",
+                          fontWeight: "500",
+                          color: paymentBadge.color,
+                          background: paymentBadge.bg,
                         }}
                       >
-                        <FaSignature /> Signed
+                        {paymentBadge.icon}
+                        {paymentBadge.text}
+                        {user.paymentStatus === "completed" && (
+                          <span
+                            style={{ marginLeft: "4px", fontWeight: "bold" }}
+                          >
+                            ({formatCurrency(user.paymentAmount)})
+                          </span>
+                        )}
                       </span>
-                    ) : (
-                      <span
+                    </td>
+                    <td style={{ padding: "12px", textAlign: "center" }}>
+                      <button
+                        onClick={() => {
+                          setSelectedUser(user);
+                          setShowModal(true);
+                        }}
                         style={{
+                          background: "none",
+                          border: "none",
+                          color: "var(--accent)",
+                          cursor: "pointer",
+                          marginRight: "10px",
+                        }}
+                        title="View Details"
+                      >
+                        <FaEye />
+                      </button>
+                      <button
+                        onClick={() => generateAgreementPDF(user, token)}
+                        style={{
+                          background: "none",
+                          border: "none",
                           color: "#ef4444",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "5px",
+                          cursor: "pointer",
+                          marginRight: "10px",
                         }}
+                        title="Download Agreement PDF"
                       >
-                        <FaTimesCircle /> Not Signed
-                      </span>
-                    )}
-                  </td>
-                  <td style={{ padding: "12px", textAlign: "center" }}>
-                    <button
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setShowModal(true);
-                      }}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "var(--accent)",
-                        cursor: "pointer",
-                        marginRight: "10px",
-                      }}
-                      title="View Details"
-                    >
-                      <FaEye />
-                    </button>
-                    <button
-                      onClick={() => generateAgreementPDF(user, token)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "#ef4444",
-                        cursor: "pointer",
-                        marginRight: "10px",
-                      }}
-                      title="Download Agreement PDF"
-                    >
-                      <FaFilePdf />
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleDelete(
-                          user._id,
-                          `${user.firstName} ${user.lastName}`,
-                        )
-                      }
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "#ef4444",
-                        cursor: "pointer",
-                      }}
-                      title="Delete User"
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                        <FaFilePdf />
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleDelete(
+                            user._id,
+                            `${user.firstName} ${user.lastName}`,
+                          )
+                        }
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "#ef4444",
+                          cursor: "pointer",
+                        }}
+                        title="Delete User"
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -543,6 +645,7 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
                   gap: "10px",
                   borderBottom: "1px solid var(--border-color)",
                   marginBottom: "20px",
+                  flexWrap: "wrap",
                 }}
               >
                 <button
@@ -559,6 +662,24 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
                   }}
                 >
                   Basic Info
+                </button>
+                <button
+                  onClick={() => setActiveTab("payment")}
+                  style={{
+                    padding: "10px 20px",
+                    background:
+                      activeTab === "payment"
+                        ? "var(--gradient)"
+                        : "transparent",
+                    border: "none",
+                    borderRadius: "8px 8px 0 0",
+                    color:
+                      activeTab === "payment" ? "white" : "var(--text-primary)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <FaDollarSign style={{ marginRight: "5px" }} />
+                  Payment
                 </button>
                 <button
                   onClick={() => setActiveTab("onboarding")}
@@ -701,6 +822,169 @@ const UsersTable = ({ users, loading, fetchUsers, token }) => {
                         {selectedUser.registrationStatus?.replace(/_/g, " ")}
                       </p>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* NEW: Payment Tab */}
+              {activeTab === "payment" && (
+                <div>
+                  <h3 style={{ marginBottom: "20px" }}>
+                    <FaDollarSign style={{ marginRight: "8px" }} />
+                    Payment Information
+                  </h3>
+                  <div style={{ display: "grid", gap: "15px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "12px",
+                        background: "var(--bg-secondary)",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <span>
+                        <strong>Payment Status:</strong>
+                      </span>
+                      <span>
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            padding: "4px 10px",
+                            borderRadius: "20px",
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            color: getPaymentStatusBadge(
+                              selectedUser.paymentStatus,
+                            ).color,
+                            background: getPaymentStatusBadge(
+                              selectedUser.paymentStatus,
+                            ).bg,
+                          }}
+                        >
+                          {
+                            getPaymentStatusBadge(selectedUser.paymentStatus)
+                              .icon
+                          }
+                          {
+                            getPaymentStatusBadge(selectedUser.paymentStatus)
+                              .text
+                          }
+                        </span>
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "12px",
+                        background: "var(--bg-secondary)",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <span>
+                        <strong>Payment Amount:</strong>
+                      </span>
+                      <span
+                        style={{ fontWeight: "bold", color: "var(--accent)" }}
+                      >
+                        {formatCurrency(selectedUser.paymentAmount)}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "12px",
+                        background: "var(--bg-secondary)",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <span>
+                        <strong>Payment Date:</strong>
+                      </span>
+                      <span>
+                        {selectedUser.paymentCompletedAt
+                          ? new Date(
+                              selectedUser.paymentCompletedAt,
+                            ).toLocaleString()
+                          : "Not paid yet"}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "12px",
+                        background: "var(--bg-secondary)",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <span>
+                        <strong>Stripe Payment ID:</strong>
+                      </span>
+                      <span
+                        style={{ fontSize: "12px", wordBreak: "break-all" }}
+                      >
+                        {selectedUser.stripePaymentIntentId || "N/A"}
+                      </span>
+                    </div>
+                    {selectedUser.paymentStatus === "completed" && (
+                      <div
+                        style={{
+                          marginTop: "10px",
+                          padding: "12px",
+                          background: "rgba(16, 185, 129, 0.1)",
+                          borderRadius: "8px",
+                          textAlign: "center",
+                        }}
+                      >
+                        <FaCheckCircle
+                          style={{ color: "#10b981", marginRight: "8px" }}
+                        />
+                        <span style={{ fontSize: "13px", color: "#10b981" }}>
+                          Payment confirmed and verified
+                        </span>
+                      </div>
+                    )}
+                    {selectedUser.paymentStatus === "pending" && (
+                      <div
+                        style={{
+                          marginTop: "10px",
+                          padding: "12px",
+                          background: "rgba(245, 158, 11, 0.1)",
+                          borderRadius: "8px",
+                          textAlign: "center",
+                        }}
+                      >
+                        <FaHourglassHalf
+                          style={{ color: "#f59e0b", marginRight: "8px" }}
+                        />
+                        <span style={{ fontSize: "13px", color: "#f59e0b" }}>
+                          Payment pending. Awaiting confirmation.
+                        </span>
+                      </div>
+                    )}
+                    {selectedUser.paymentStatus === "failed" && (
+                      <div
+                        style={{
+                          marginTop: "10px",
+                          padding: "12px",
+                          background: "rgba(239, 68, 68, 0.1)",
+                          borderRadius: "8px",
+                          textAlign: "center",
+                        }}
+                      >
+                        <FaExclamationTriangle
+                          style={{ color: "#ef4444", marginRight: "8px" }}
+                        />
+                        <span style={{ fontSize: "13px", color: "#ef4444" }}>
+                          Payment failed. Please check with the student.
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

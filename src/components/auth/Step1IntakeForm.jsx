@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { API_ENDPOINTS } from "../config/api";
 import {
   FaUser,
   FaPhone,
@@ -16,12 +18,18 @@ import {
   FaLanguage,
   FaCalendarCheck,
   FaLaptopCode,
+  FaSpinner,
 } from "react-icons/fa";
 
 const Step1IntakeForm = ({ formData, setFormData, isSubmitting, onSubmit }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState({});
+  const [emailError, setEmailError] = useState(false);
+  const [emailCheckLoading, setEmailCheckLoading] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+  const [existingRegistrationStatus, setExistingRegistrationStatus] =
+    useState(null);
 
   const courses = [
     "Part 107 Certification",
@@ -203,6 +211,42 @@ const Step1IntakeForm = ({ formData, setFormData, isSubmitting, onSubmit }) => {
         return "";
       default:
         return "";
+    }
+  };
+  const checkEmailExists = async (email) => {
+    if (!email || email.length < 5) return;
+
+    setEmailCheckLoading(true);
+    try {
+      const response = await axios.post(API_ENDPOINTS.CHECK_EMAIL, { email });
+
+      if (response.data.exists) {
+        setEmailExists(true);
+        setExistingRegistrationStatus(response.data);
+
+        // ✅ FIX: Different message based on registration status
+        if (response.data.isFullyRegistered) {
+          // User is FULLY registered
+          toast.error(
+            "This email is already registered. Please contact support if you need assistance.",
+          );
+          setEmailError(true);
+        } else {
+          // User has INCOMPLETE registration
+          toast.info(
+            "An incomplete registration exists for this email. You can continue where you left off.",
+          );
+          setEmailError(false);
+        }
+      } else {
+        setEmailExists(false);
+        setExistingRegistrationStatus(null);
+        setEmailError(false);
+      }
+    } catch (error) {
+      console.error("Email check error:", error);
+    } finally {
+      setEmailCheckLoading(false);
     }
   };
 
@@ -565,20 +609,44 @@ const Step1IntakeForm = ({ formData, setFormData, isSubmitting, onSubmit }) => {
                 className="form-control"
                 value={formData.email || ""}
                 onChange={handleChange}
-                onBlur={handleBlur}
+                onBlur={(e) => checkEmailExists(e.target.value)}
                 required
               />
-              {touched.email && errors.email && (
+              {emailCheckLoading && (
+                <FaSpinner
+                  style={{
+                    animation: "spin 1s linear infinite",
+                    marginLeft: "8px",
+                  }}
+                  size={12}
+                />
+              )}
+
+              {/* Email status messages */}
+              {emailExists && existingRegistrationStatus?.isFullyRegistered && (
                 <p
                   style={{
                     fontSize: "11px",
-                    color: "#f44336",
+                    color: "#ef4444",
                     marginTop: "5px",
                   }}
                 >
-                  {errors.email}
+                  ⚠️ This email is already registered. Please contact support.
                 </p>
               )}
+              {emailExists &&
+                !existingRegistrationStatus?.isFullyRegistered && (
+                  <p
+                    style={{
+                      fontSize: "11px",
+                      color: "#f59e0b",
+                      marginTop: "5px",
+                    }}
+                  >
+                    🔄 An incomplete registration exists for this email. You can
+                    continue where you left off.
+                  </p>
+                )}
             </div>
           </div>
 
@@ -1126,7 +1194,11 @@ const Step1IntakeForm = ({ formData, setFormData, isSubmitting, onSubmit }) => {
           className="btn-primary-custom"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          disabled={isSubmitting || !isStep1Complete()}
+          disabled={
+            isSubmitting ||
+            !isStep1Complete() ||
+            (emailExists && existingRegistrationStatus?.isFullyRegistered)
+          }
           style={{
             width: "100%",
             padding: "16px",

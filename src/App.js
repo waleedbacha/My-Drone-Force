@@ -25,9 +25,11 @@ import Register from "./components/auth/Register";
 import AdminLogin from "./components/admin/AdminLogin";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import MidSouthAdvantage from "./components/home/MidSouthAdvantage";
-// import SuccessPipeline from "./components/home/SuccessPipeline";
 import SegmentedCTASection from "./components/home/SegmentedCTASection";
 import EventsPage from "./components/events/EventsPage";
+import PricingSection from "./components/pricing/PricingSection";
+import PricingPage from "./components/pricing/PricingPage";
+import ClarityInit from "./components/microsoft-clarity/ClarityInit";
 
 // Component to conditionally show Navbar and Footer
 const Layout = ({ children, toggleTheme, theme }) => {
@@ -41,6 +43,7 @@ const Layout = ({ children, toggleTheme, theme }) => {
 
   return (
     <>
+      <ClarityInit />
       {!hideNavbar && <Navbar toggleTheme={toggleTheme} theme={theme} />}
       <AnimatedBackground />
       <main>{children}</main>
@@ -109,6 +112,7 @@ function App() {
                 {/* <SuccessPipeline /> */}
                 <GalleryGrid />
                 <CareersSection />
+                <PricingSection />
                 <TestimonialCarousel />
                 <SegmentedCTASection />
                 <Contact />
@@ -128,6 +132,14 @@ function App() {
             element={
               <Layout toggleTheme={toggleTheme} theme={theme}>
                 <CareersPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/pricing"
+            element={
+              <Layout toggleTheme={toggleTheme} theme={theme}>
+                <PricingPage />
               </Layout>
             }
           />

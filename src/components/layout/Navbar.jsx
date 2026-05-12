@@ -79,6 +79,7 @@ const Navbar = ({ toggleTheme, theme }) => {
     { name: "About", to: "about", isRoute: false },
     { name: "Gallery", to: "gallery", isRoute: false },
     { name: "Careers", to: "careers", isRoute: false },
+    { name: "Pricing", to: "/pricing", isRoute: true },
     { name: "Events", to: "/upcoming-events", isRoute: true },
     { name: "Testimonials", to: "testimonials", isRoute: false },
     { name: "Contact", to: "contact", isRoute: false },

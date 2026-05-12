@@ -873,7 +873,7 @@ const Step2ScreeningRubric = ({
               opacity: !allBasicEligibilityMet ? 0.5 : 1,
             }}
           >
-            {isSubmitting ? "Processing..." : "Continue to Pledge →"}
+            {isSubmitting ? "Processing..." : "Continue to payment →"}
           </motion.button>
         </div>
       </form>

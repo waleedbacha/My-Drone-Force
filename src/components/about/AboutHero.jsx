@@ -64,10 +64,11 @@ const AboutHero = () => {
                   marginBottom: "20px",
                 }}
               >
-                My Drone Force is America's leading drone training and
-                certification provider. We're dedicated to bridging the skills
-                gap in the drone industry by providing comprehensive Part 107
-                certification training and career readiness programs.
+                My Drone Force is a leading provider of drone training,
+                certification, and workforce services. We're dedicated to
+                bridging the skills gap in the drone industry. We provide
+                comprehensive Part 107 certification training and career
+                readiness programs.
               </p>
 
               <p
@@ -130,8 +131,8 @@ const AboutHero = () => {
                       color: "var(--text-secondary)",
                     }}
                   >
-                    <FaCheckCircle style={{ color: "var(--accent)" }} />
-                    <span>Lifetime Support</span>
+                    {/* <FaCheckCircle style={{ color: "var(--accent)" }} />
+                    <span>Lifetime Support</span> */}
                   </div>
                 </div>
               </div>

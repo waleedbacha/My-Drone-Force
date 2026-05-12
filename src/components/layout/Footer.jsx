@@ -19,9 +19,10 @@ const Footer = () => {
   const quickLinks = [
     { name: "Home", to: "home", isRoute: false },
     { name: "About", to: "about", isRoute: false },
-    { name: "Careers", to: "careers", isRoute: false },
-    { name: "Events", to: "/upcoming-events", isRoute: true },
     { name: "Gallery", to: "gallery", isRoute: false },
+    { name: "Careers", to: "careers", isRoute: false },
+    { name: "Pricing", to: "/pricing", isRoute: true },
+    { name: "Events", to: "/upcoming-events", isRoute: true },
     { name: "Testimonials", to: "testimonials", isRoute: false },
     { name: "Contact", to: "contact", isRoute: false },
   ];
@@ -29,7 +30,7 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: <FaFacebook size={18} />,
-      url: "https://facebook.com/mydroneforce",
+      url: "https://www.facebook.com/profile.php?id=61589419281113",
       label: "Facebook",
     },
     {
@@ -39,7 +40,7 @@ const Footer = () => {
     },
     {
       icon: <FaLinkedin size={18} />,
-      url: "https://linkedin.com/company/mydroneforce",
+      url: "https://www.linkedin.com/company/my-drone-force/",
       label: "LinkedIn",
     },
     {
@@ -268,7 +269,7 @@ const Footer = () => {
                 <span
                   style={{ color: "var(--text-secondary)", fontSize: "13px" }}
                 >
-                  (501) 123-4567
+                  (501) 859-4672
                 </span>
               </li>
               <li

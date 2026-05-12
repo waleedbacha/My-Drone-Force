@@ -1,12 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import {
-  FaSearch,
-  FaGraduationCap,
-  FaBriefcase,
-  FaHandshake,
-} from "react-icons/fa";
+import { FaSearch, FaGraduationCap, FaBriefcase } from "react-icons/fa";
 
 const WhatWeDo = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -50,19 +45,6 @@ const WhatWeDo = () => {
         "Lifetime career support",
       ],
       color: "#f59e0b",
-    },
-    {
-      icon: <FaHandshake />,
-      title: "Lifetime Support",
-      subtitle: "Ongoing Success",
-      description:
-        "Our commitment doesn't end at graduation. We provide ongoing mentorship, resume help, interview prep, and career advancement opportunities.",
-      features: [
-        "Continuous mentorship",
-        "Advanced certification pathways",
-        "Networking events & job fairs",
-      ],
-      color: "#8b5cf6",
     },
   ];
 
@@ -187,31 +169,6 @@ const WhatWeDo = () => {
             </motion.div>
           ))}
         </div>
-
-        {/* Connecting Arrows (desktop only) */}
-        {/* <div
-          style={{
-            display: isMobile ? "none" : "flex",
-            justifyContent: "center",
-            gap: "100px",
-            marginTop: "20px",
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
-          {["→", "→", "→"].map((arrow, i) => (
-            <div
-              key={i}
-              style={{
-                fontSize: "28px",
-                color: "var(--accent)",
-                opacity: 0.5,
-              }}
-            >
-              {arrow}
-            </div>
-          ))}
-        </div> */}
       </div>
     </section>
   );

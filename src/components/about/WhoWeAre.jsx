@@ -13,22 +13,9 @@ const WhoWeAre = () => {
 
   const owners = [
     {
-      name: "Henry A. Golatt",
-      title: "Founder & CEO",
-      bio: "Visionary leader with over 20 years of experience in aviation and drone technology. Committed to creating opportunities for the next generation of drone professionals.",
-      image: henryImage,
-      social: {
-        linkedin: " www.linkedin.com/in/hgconsultingservices",
-        twitter: "#",
-        email: "#",
-      },
-      color: "#0066cc",
-      quote: "Empowering youth through technology",
-    },
-    {
       name: "Terence Bolden",
-      title: "COO & Head of Training",
-      bio: "Master drone instructor with FAA certifications. Has trained over 5,000 students and developed our industry-leading Part 107 curriculum.",
+      title: "Co-Founder and Managing Partner",
+      bio: "Terence L. Bolden is an international organizational development and sustainability strategist with experience leading renewable energy and workforce initiatives across Africa, Asia, and the United States. At MyDroneForce, he applies his global project leadership and systems‑level expertise to drive strategic vision, operational excellence, and the integration of drone technology into community‑centered economic development.",
       image: terenceImage,
       social: {
         linkedin: " https://www.linkedin.com/in/terencelbolden-a385221a",
@@ -39,9 +26,24 @@ const WhoWeAre = () => {
       quote: "Excellence in every flight",
     },
     {
+      name: "Henry A. Golatt",
+      title: "Co‑Founder, Lead Strategist, and Partnership Architect",
+      bio: "Henry Golatt is nationally recognized for his work in inclusive economic development, driving equity‑centered workforce strategy, institutional transformation, and community economic mobility across multiple states. At MyDroneForce, he applies decades of ecosystem design and cross‑sector partnership expertise to shape a scalable workforce vision that positions drone technology as a gateway to generational opportunity for underserved communities.",
+      image: henryImage,
+      social: {
+        linkedin: "https://www.linkedin.com/in/hgconsultingservices/",
+        twitter: "#",
+        email: "#",
+      },
+      color: "#0066cc",
+      quote: "Empowering youth through technology",
+    },
+
+    {
       name: "Vince Bailey",
-      title: "CTO & Director of Innovation",
-      bio: "Co-Founder and licensed drone pilot with a focus on real-world application 40+ years of experience in media, broadcasting, and production Founder of Vince The Voice LLC (est. 1996), a full-service audio/video production and consulting company",
+      title:
+        "Co‑Founder, Resident Drone Pilot, Official Voice and Media/Marketing Manager",
+      bio: "Vince “The Voice” Bailey is a nationally recognized broadcast professional and workforce development leader whose 40‑year career spans radio, television, video production, and high‑impact public engagement. At MyDroneForce, he leverages his instructional expertise and communication mastery to lead learner engagement and community outreach, ensuring every participant gains the confidence and professionalism needed to excel in the drone industry.",
       image: vinceImage,
       social: {
         linkedin: " https://www.linkedin.com/in/vincebailey",
