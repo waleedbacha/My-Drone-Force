@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Masonry from "react-masonry-css";
@@ -12,11 +13,7 @@ import pilot1 from "../../assests/images/gallery/drone10.png";
 import aerial1 from "../../assests/images/gallery/drone4.jpg";
 import event1 from "../../assests/images/gallery/drone5.jpg";
 import tech1 from "../../assests/images/gallery/drone_9.png";
-
-// Import TCB Drones Partnership Images
-import tcb1 from "../../assests/images/gallery/partnership.jpeg";
-// import tcb2 from "../../assests/images/gallery/partnership.jpeg";
-// import tcb3 from "../../assests/images/gallery/partnership.jpeg";
+import drone1 from "../../assests/images/gallery/drone1.png";
 
 const GalleryGrid = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -41,10 +38,10 @@ const GalleryGrid = () => {
     // Partnership Images - TCB Drones
     {
       id: 7,
-      src: tcb1,
-      title: "MyDroneForce.com Signs Training Agreement with TCB Drones",
+      src: drone1,
+      title: "MyDroneForce.com Drones help in agriculture",
       subtitle: "Strategic Partnership for Drone Education",
-      category: "partnerships",
+      category: "agricultural",
       type: "image",
     },
     // {
@@ -117,10 +114,10 @@ const GalleryGrid = () => {
       count: galleryItems.filter((i) => i.category === "featured").length,
     },
     {
-      id: "partnerships",
-      name: "Partnerships",
+      id: "agricultural",
+      name: "Agricultural",
       icon: "🤝",
-      count: galleryItems.filter((i) => i.category === "partnerships").length,
+      count: galleryItems.filter((i) => i.category === "agricultural").length,
     },
     {
       id: "training",

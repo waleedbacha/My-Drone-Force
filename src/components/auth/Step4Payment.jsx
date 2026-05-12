@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
@@ -282,24 +283,6 @@ const PaymentForm = ({
         >
           By completing this payment, you agree to our terms and conditions.
         </p>
-
-        {process.env.NODE_ENV === "development" && (
-          <div
-            style={{
-              marginTop: "15px",
-              padding: "10px",
-              background: "rgba(245, 158, 11, 0.1)",
-              border: "1px solid #f59e0b",
-              borderRadius: "8px",
-              textAlign: "center",
-            }}
-          >
-            <p style={{ fontSize: "11px", color: "#f59e0b", marginBottom: 0 }}>
-              💳 TEST MODE: Use card 4242 4242 4242 4242 (any future expiry, any
-              CVC)
-            </p>
-          </div>
-        )}
       </div>
 
       <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
@@ -347,8 +330,8 @@ const PaymentForm = ({
   );
 };
 
-// Main component (exported as Step3Payment for use in Register.jsx)
-const Step3Payment = ({
+// Main component
+const Step4Payment = ({
   userId,
   userEmail,
   userName,
@@ -483,4 +466,4 @@ const Step3Payment = ({
   );
 };
 
-export default Step3Payment;
+export default Step4Payment;
