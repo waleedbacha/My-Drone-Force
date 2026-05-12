@@ -123,10 +123,11 @@ const PricingSection = () => {
               marginBottom: "20px",
             }}
           >
-            Only{" "}
-            <span style={{ fontSize: "clamp(40px, 6vw, 60px)" }}>$1,500</span>
+            <span style={{ fontSize: "clamp(40px, 6vw, 60px)" }}>
+              {" "}
+              Complete Drone Career Package
+            </span>
             <br />
-            Complete Drone Career Package
           </h2>
           <p
             style={{

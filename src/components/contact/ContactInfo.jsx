@@ -34,7 +34,7 @@ const ContactInfo = () => {
     {
       icon: <FaPhone />,
       title: "Phone",
-      details: ["(501) 123-4567", "(501) 765-4321"],
+      details: ["(501) 859-4672"],
       subtext: "Mon-Fri 9am-6pm",
       color: "#4caf50",
       link: "tel:+15011234567",
@@ -42,7 +42,7 @@ const ContactInfo = () => {
     {
       icon: <FaEnvelope />,
       title: "Email",
-      details: ["info@mydroneforce.com", "support@mydroneforce.com"],
+      details: ["info@mydroneforce.com"],
       subtext: "24/7 Support",
       color: "#2196f3",
       link: "mailto:info@mydroneforce.com",
