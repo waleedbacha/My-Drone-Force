@@ -60,7 +60,7 @@ const HeroSection = () => {
       label: "Youth Ready for Opportunity",
     },
     { icon: <FaChartLine />, value: "$60k+", label: "Average Starting Salary" },
-    { icon: <FaAward />, value: "98%", label: "FAA Pass Rate" },
+    { icon: <FaAward />, value: "85%", label: "Targeted Pass Rate" },
   ];
 
   return (

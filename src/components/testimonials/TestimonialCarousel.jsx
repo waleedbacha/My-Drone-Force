@@ -384,8 +384,8 @@ const TestimonialCarousel = () => {
           </div>
           <div className="stat-divider" />
           <div className="stat-item">
-            <div className="stat-number">98%</div>
-            <div className="stat-label">Pass Rate</div>
+            <div className="stat-number">85%</div>
+            <div className="stat-label">Targeted Pass Rate</div>
           </div>
           <div className="stat-divider" />
           <div className="stat-item">

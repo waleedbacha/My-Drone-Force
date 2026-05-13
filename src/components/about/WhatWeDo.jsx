@@ -27,7 +27,7 @@ const WhatWeDo = () => {
       description:
         "Comprehensive FAA Part 107 certification training with hands-on experience using enterprise-grade drones — LiDAR, Thermal, Multispectral, and more.",
       features: [
-        "98% FAA Part 107 pass rate",
+        "85% Targeted FAA Part 107 pass rate",
         "Hands-on with industry-standard equipment",
         "Specialized tracks: Ag-Tech, Infrastructure, Public Safety",
       ],

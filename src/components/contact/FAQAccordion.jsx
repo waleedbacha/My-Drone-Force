@@ -20,12 +20,12 @@ const FAQAccordion = () => {
     {
       question: "What is the job placement rate?",
       answer:
-        "We have a 95% job placement rate within 3 months of certification. Our career services team works with over 50 corporate partners actively hiring drone pilots.",
+        "We have a 85% targeted job placement rate within 3 months of certification. Our career services team works with over 50 corporate partners actively hiring drone pilots.",
     },
     {
       question: "Is financial aid available?",
       answer:
-        "Yes! We offer payment plans, scholarships for veterans, and corporate sponsorship programs. Contact our admissions team for personalized options.",
+        "At this time, Financial aid is not available. We urge potential applicants who may need assistance to contact us.",
     },
     {
       question: "Can I take courses online?",

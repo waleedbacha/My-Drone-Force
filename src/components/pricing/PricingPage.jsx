@@ -87,8 +87,8 @@ const PricingPage = () => {
       icon: <FaMoneyBillWave size={24} />,
     },
     {
-      value: "98%",
-      label: "Job Placement Rate",
+      value: "85%",
+      label: "Targeted Job Placement Rate",
       icon: <FaBriefcase size={24} />,
     },
   ];
@@ -633,8 +633,7 @@ const PricingPage = () => {
               opacity: 0.8,
             }}
           >
-            ⚡ Only $1,500 • 7-day money-back guarantee • No hidden fees • Job
-            placement included
+            ⚡ Only $1,500 • No hidden fees • Job placement included
           </p>
         </motion.div>
       </div>

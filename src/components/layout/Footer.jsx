@@ -126,8 +126,8 @@ const Footer = () => {
                 maxWidth: "320px",
               }}
             >
-              America's leading drone training and certification provider.
-              Launch your career in the fastest-growing industry.
+              Mid-South Delta's leading drone training and certification
+              provider. Launch your career in the fastest-growing industry.
             </p>
             <div
               style={{

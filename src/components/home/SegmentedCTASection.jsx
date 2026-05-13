@@ -22,7 +22,7 @@ const SegmentedCTASection = () => {
       buttonLink: "/register",
       bgGradient: "linear-gradient(135deg, #1e40af, #3b82f6)",
       hoverGradient: "linear-gradient(135deg, #1e3a8a, #2563eb)",
-      stat: "98% Pass Rate",
+      stat: "85% Targeted Pass Rate",
       statColor: "#60a5fa",
     },
     {
