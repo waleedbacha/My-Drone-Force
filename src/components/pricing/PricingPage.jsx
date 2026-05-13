@@ -60,7 +60,7 @@ const PricingPage = () => {
     {
       question: "What is the job placement rate?",
       answer:
-        "94% of our graduates are employed within 90 days of completing the program.",
+        "85% of our graduates are employed within 90 days of completing the program.",
     },
     {
       question: "Do I need any prior experience?",
@@ -76,11 +76,15 @@ const PricingPage = () => {
 
   const stats = [
     {
-      value: "500+",
+      value: "200+",
       label: "Students Trained",
       icon: <FaUserGraduate size={24} />,
     },
-    { value: "94%", label: "FAA Pass Rate", icon: <FaMedal size={24} /> },
+    {
+      value: "85%",
+      label: "Targeted FAA Pass Rate",
+      icon: <FaMedal size={24} />,
+    },
     {
       value: "$60K+",
       label: "Average Starting Salary",
@@ -633,7 +637,7 @@ const PricingPage = () => {
               opacity: 0.8,
             }}
           >
-            ⚡ Only $1,500 • No hidden fees • Job placement included
+            ⚡ Only $1,500 • No hidden fees
           </p>
         </motion.div>
       </div>

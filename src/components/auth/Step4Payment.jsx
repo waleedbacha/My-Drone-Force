@@ -21,6 +21,20 @@ import { API_ENDPOINTS } from "../config/api";
 
 // Initialize Stripe with publishable key
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+console.log("========== STRIPE DEBUG LOGS ==========");
+console.log(
+  "1. REACT_APP_STRIPE_PUBLISHABLE_KEY exists?",
+  !!process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY,
+);
+console.log(
+  "2. Key starts with:",
+  process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY?.substring(0, 10),
+);
+console.log(
+  "3. Key length:",
+  process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY?.length,
+);
+console.log("=======================================");
 
 // Internal payment form component
 const PaymentForm = ({
@@ -40,14 +54,19 @@ const PaymentForm = ({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log("10. Payment submitted");
+    console.log("11. stripe ready?", !!stripe);
+    console.log("12. elements ready?", !!elements);
     if (!stripe || !elements) {
+      console.error("13. Stripe not initialized!");
+
       setErrorMessage("Stripe is not initialized. Please refresh the page.");
       return;
     }
 
     setIsProcessing(true);
     setErrorMessage("");
+    console.log("14. Submitting elements...");
 
     const { error: submitError } = await elements.submit();
     if (submitError) {
@@ -55,6 +74,7 @@ const PaymentForm = ({
       setIsProcessing(false);
       return;
     }
+    console.log("16. Confirming payment...");
 
     const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
       elements,
@@ -63,6 +83,7 @@ const PaymentForm = ({
       },
       redirect: "if_required",
     });
+    console.log("17. Confirm result:", { confirmError, paymentIntent });
 
     if (confirmError) {
       setErrorMessage(confirmError.message);
@@ -345,20 +366,31 @@ const Step4Payment = ({
 
   useEffect(() => {
     const createPaymentIntent = async () => {
+      console.log("4. Creating payment intent for userId:", userId);
+      console.log("5. API URL:", API_ENDPOINTS.CREATE_PAYMENT_INTENT);
       try {
         const response = await axios.post(API_ENDPOINTS.CREATE_PAYMENT_INTENT, {
           userId: userId,
           email: userEmail,
           name: userName,
         });
+        console.log("6. Payment intent response:", response.data);
 
         if (response.data.success) {
+          console.log(
+            "7. clientSecret received:",
+            !!response.data.clientSecret,
+          );
           setClientSecret(response.data.clientSecret);
         } else {
+          console.error("8. Payment intent failed:", response.data.message);
           setError(response.data.message);
         }
       } catch (err) {
-        console.error("Create payment intent error:", err);
+        console.error(
+          "9. Payment intent error:",
+          err.response?.data || err.message,
+        );
         setError(err.response?.data?.message || "Failed to initialize payment");
       } finally {
         setIsLoading(false);

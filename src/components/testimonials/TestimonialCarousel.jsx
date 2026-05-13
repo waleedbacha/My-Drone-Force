@@ -379,7 +379,7 @@ const TestimonialCarousel = () => {
           className="stats-row"
         >
           <div className="stat-item">
-            <div className="stat-number">10,000+</div>
+            <div className="stat-number">200+</div>
             <div className="stat-label">Happy Students</div>
           </div>
           <div className="stat-divider" />
