@@ -9,7 +9,7 @@ import Step2ScreeningRubric from "./Step2ScreeningRubric";
 import Step3Payment from "./Step4Payment"; // File name Step4Payment, export named Step3Payment
 import Step3CommitmentPledge from "./Step3CommitmentPledge";
 import AlreadyRegisteredModal from "./AlreadyRegisteredModal";
-import { API_ENDPOINTS } from "../config/api";
+import API_URL, { API_ENDPOINTS } from "../config/api";
 import {
   getWelcomeMessage,
   getWelcomeBackMessage,
@@ -17,7 +17,6 @@ import {
   getDaysLeft,
 } from "../utils/cohortHelper";
 import AnimatedBanner from "../common/AnimatedBanner";
-
 const Register = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -111,13 +110,86 @@ const Register = () => {
       }
 
       try {
-        const response = await axios.get(
+        // ✅ STEP 1: Fetch FULL user data (not just payment status)
+        console.log("Fetching user data for ID:", savedUserId);
+
+        // Try admin endpoint first (if user somehow has token), then fallback to public
+        let userResponse;
+        try {
+          userResponse = await axios.get(
+            `${API_URL}/api/admin/users/${savedUserId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+              },
+            },
+          );
+        } catch (adminError) {
+          console.log("Admin endpoint failed, trying public endpoint...");
+          userResponse = await axios.get(
+            `${API_URL}/api/auth/user/${savedUserId}`,
+          );
+        }
+
+        const user = userResponse.data.user;
+        console.log("User data fetched:", user);
+
+        // ✅ STEP 2: Populate Step 1 form data
+        setStep1Data({
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          email: user.email || "",
+          phone: user.phone || "",
+          dateOfBirth: user.dateOfBirth
+            ? new Date(user.dateOfBirth).toISOString().split("T")[0]
+            : "",
+          address: user.address || "",
+          city: user.city || "",
+          state: user.state || "",
+          zipCode: user.zipCode || "",
+          courseInterest: user.courseInterest || "",
+          hearAboutUs: user.hearAboutUs || "",
+          profileImage: null,
+          englishProficiency: user.englishProficiency || false,
+          programCommitment: user.programCommitment || false,
+          techAccess: user.techAccess || false,
+          commitmentAgreements: user.commitmentAgreements || [],
+          electronicSignature: user.electronicSignature || "",
+          signatureDate: user.signatureDate || "",
+          printedName: user.printedName || "",
+        });
+
+        // ✅ STEP 3: Populate Step 2 form data if screening exists
+        if (user.screeningRubric) {
+          setStep2Data({
+            userId: savedUserId,
+            ageRequirement: user.screeningRubric.ageRequirement || false,
+            validId: user.screeningRubric.validId || false,
+            englishReadWrite: user.screeningRubric.englishReadWrite || false,
+            hasComputerTablet: user.screeningRubric.hasComputerTablet || false,
+            hasInternet: user.screeningRubric.hasInternet || false,
+            comfortableZoom: user.screeningRubric.comfortableZoom || false,
+            availableTraining: user.screeningRubric.availableTraining || false,
+            canAttendInPerson: user.screeningRubric.canAttendInPerson || false,
+            canStudyDaily: user.screeningRubric.canStudyDaily || false,
+            canTakeExamWithin30Days:
+              user.screeningRubric.canTakeExamWithin30Days || false,
+            clearReasonForCert:
+              user.screeningRubric.clearReasonForCert || false,
+            careerInterest: user.screeningRubric.careerInterest || false,
+            willingSignPledge: user.screeningRubric.willingSignPledge || false,
+            notes: user.screeningRubric.evaluatorComments || "",
+          });
+        }
+
+        // ✅ STEP 4: Get payment status
+        const paymentResponse = await axios.get(
           API_ENDPOINTS.PAYMENT_STATUS(savedUserId),
         );
 
-        if (response.data.success) {
+        if (paymentResponse.data.success) {
           const { paymentStatus, registrationStatus, isFullyRegistered } =
-            response.data.data;
+            paymentResponse.data.data;
 
           // Set returning user flag for welcome message
           if (
@@ -138,8 +210,8 @@ const Register = () => {
             isFullyRegistered
           ) {
             setRegisteredUserInfo({
-              name: `${step1Data.firstName} ${step1Data.lastName}`,
-              email: step1Data.email,
+              name: `${user.firstName} ${user.lastName}`,
+              email: user.email,
             });
             setAlreadyRegistered(true);
             setResumeCheckComplete(true);
@@ -168,6 +240,7 @@ const Register = () => {
           ) {
             setUserId(savedUserId);
             setShowPaymentStep(true);
+            setCurrentStep(3); // ✅ IMPORTANT: Set current step to 3
             toast.info("Please complete your payment to continue.");
             setResumeCheckComplete(true);
             return;
@@ -176,8 +249,10 @@ const Register = () => {
           // Case 4: User completed step 1 only
           if (registrationStatus === "step1_intake_completed") {
             setUserId(savedUserId);
-            setCurrentStep(2);
-            toast.info("Welcome back! Please complete the screening rubric.");
+            setCurrentStep(1);
+            toast.info(
+              "Welcome back! Please complete the first form to continue.",
+            );
             setResumeCheckComplete(true);
             return;
           }
@@ -190,7 +265,7 @@ const Register = () => {
     };
 
     checkResumeRegistration();
-  }, [resumeUserId, step1Data.firstName, step1Data.lastName, step1Data.email]); // ← FIXED dependency array
+  }, [resumeUserId]); // Remove the step1Data dependencies - they cause issues
 
   // Save progress to localStorage
   const saveProgress = (step, userId = null) => {

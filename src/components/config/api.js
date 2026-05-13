@@ -27,7 +27,7 @@ const API_ENDPOINTS = {
   ADMIN_STATS: `${API_URL}/api/admin/stats`,
 
   // Onboarding endpoints
-  ONBOARDING_PROGRESS: (userId) => `${API_URL}/api/onboarding/${userId}`,
+  GET_USER_DATA: (userId) => `${API_URL}/api/auth/user/${userId}`,
 };
 
 export { API_URL, API_ENDPOINTS };
