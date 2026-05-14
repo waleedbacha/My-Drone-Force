@@ -30,13 +30,21 @@ const drawLine = (doc, y, xStart = 20, xEnd = 190) => {
   doc.line(xStart, y, xEnd, y);
 };
 
-// Draw a section header
+// Draw a section header (NO EMOJIS - clean text only)
 const drawSectionHeader = (doc, title, y, color = [0, 102, 204]) => {
   doc.setFontSize(14);
   doc.setTextColor(color[0], color[1], color[2]);
   doc.setFont("helvetica", "bold");
   doc.text(title, 20, y);
-  drawLine(doc, y + 3);
+
+  // Add a decorative line under the header
+  doc.setDrawColor(color[0], color[1], color[2]);
+  doc.setLineWidth(0.5);
+  doc.line(20, y + 3, 50, y + 3);
+  doc.setLineWidth(0.2);
+  doc.line(50, y + 3, 190, y + 3);
+  doc.setLineWidth(0.2);
+
   return y + 15;
 };
 
@@ -102,8 +110,8 @@ const generateAgreementPDF = async (user, token) => {
 
     let yPos = 65;
 
-    // Student Information Section
-    yPos = drawSectionHeader(doc, "📋 STUDENT INFORMATION", yPos);
+    // Student Information Section (no emoji)
+    yPos = drawSectionHeader(doc, "STUDENT INFORMATION", yPos);
     yPos = drawField(
       doc,
       "Full Name:",
@@ -128,8 +136,8 @@ const generateAgreementPDF = async (user, token) => {
 
     yPos += 5;
 
-    // ========== ONBOARDING VERIFICATION SECTION ==========
-    yPos = drawSectionHeader(doc, "✅ ONBOARDING VERIFICATION", yPos);
+    // Onboarding Verification Section (no emoji)
+    yPos = drawSectionHeader(doc, "ONBOARDING VERIFICATION", yPos);
     yPos = drawCheckbox(
       doc,
       "English Language Proficiency (FAA Requirement)",
@@ -151,13 +159,34 @@ const generateAgreementPDF = async (user, token) => {
 
     yPos += 5;
 
-    // ========== COMMITMENT AGREEMENTS SECTION ==========
-    yPos = drawSectionHeader(doc, "📝 COMMITMENT AGREEMENTS", yPos);
+    // Commitment Agreements Section (no emoji)
+    yPos = drawSectionHeader(doc, "COMMITMENT AGREEMENTS", yPos);
 
     const commitments = user.commitmentAgreements || [];
     if (commitments.length > 0) {
       commitments.forEach((commitment) => {
-        yPos = drawCheckbox(doc, commitment, true, yPos);
+        let displayText = commitment;
+        // Format commitment text for better readability
+        switch (commitment) {
+          case "attendance":
+            displayText = "Obligation to attend all training sessions and labs";
+            break;
+          case "activeParticipation":
+            displayText =
+              "Active participation in all curriculum activities and group discussions";
+            break;
+          case "practiceExams":
+            displayText =
+              "Utilization of all provided practice exams to ensure readiness";
+            break;
+          case "faaExamCommitment":
+            displayText =
+              "Commitment to schedule and take the FAA Part 107 exam within thirty (30) days of program completion";
+            break;
+          default:
+            displayText = commitment;
+        }
+        yPos = drawCheckbox(doc, displayText, true, yPos);
       });
     } else {
       doc.setFontSize(11);
@@ -174,8 +203,8 @@ const generateAgreementPDF = async (user, token) => {
       yPos = 30;
     }
 
-    // ========== SIGNATURE SECTION ==========
-    yPos = drawSectionHeader(doc, "✍️ SIGNATURE & ACKNOWLEDGMENT", yPos);
+    // Signature Section (no emoji)
+    yPos = drawSectionHeader(doc, "SIGNATURE & ACKNOWLEDGMENT", yPos);
     yPos = drawField(
       doc,
       "Electronic Signature:",
@@ -212,7 +241,7 @@ const generateAgreementPDF = async (user, token) => {
 
     yPos += 10;
 
-    // ========== LEGAL STATEMENT ==========
+    // Legal Statement
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     doc.setFont("helvetica", "italic");
@@ -234,7 +263,7 @@ const generateAgreementPDF = async (user, token) => {
 
     yPos += 25;
 
-    // ========== FOOTER ==========
+    // Footer
     doc.setDrawColor(200, 200, 200);
     doc.line(20, yPos, 190, yPos);
     yPos += 5;
@@ -261,13 +290,13 @@ const generateAgreementPDF = async (user, token) => {
       { align: "center" },
     );
 
-    // ========== PAGE 2: DETAILED TERMS (Optional - if needed) ==========
+    // ========== PAGE 2: DETAILED TERMS ==========
     doc.addPage();
 
     let page2Y = 30;
 
-    // Terms & Conditions Header
-    page2Y = drawSectionHeader(doc, "📜 TERMS & CONDITIONS", page2Y);
+    // Terms & Conditions Header (no emoji)
+    page2Y = drawSectionHeader(doc, "TERMS & CONDITIONS", page2Y);
 
     const terms = [
       "1. The candidate agrees to complete all training requirements as outlined in the program curriculum.",
@@ -294,8 +323,8 @@ const generateAgreementPDF = async (user, token) => {
 
     page2Y += 10;
 
-    // Contact Information
-    page2Y = drawSectionHeader(doc, "📞 CONTACT INFORMATION", page2Y);
+    // Contact Information Header (no emoji)
+    page2Y = drawSectionHeader(doc, "CONTACT INFORMATION", page2Y);
     doc.setFontSize(10);
     doc.setTextColor(60, 60, 60);
     doc.text(
@@ -303,11 +332,12 @@ const generateAgreementPDF = async (user, token) => {
       20,
       page2Y,
     );
+
     page2Y += 8;
     doc.setFont("helvetica", "bold");
     doc.text("Email: info@mydroneforce.com", 25, page2Y);
     page2Y += 7;
-    doc.text("Phone: (501) 123-4567", 25, page2Y);
+    doc.text("Phone: (501) 859-4672", 25, page2Y);
     page2Y += 7;
     doc.text(
       "Address: 300 South Spring Street, Suite 940, Little Rock, AR 72201",

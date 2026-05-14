@@ -230,7 +230,7 @@ const Step1IntakeForm = ({ formData, setFormData, isSubmitting, onSubmit }) => {
         if (response.data.isFullyRegistered) {
           // User is FULLY registered
           toast.error(
-            "This email is already registered. Please contact support if you need assistance.",
+            "⚠️ This email is already registered. Please contact support if you need assistance.",
           );
           setEmailError(true);
         } else {

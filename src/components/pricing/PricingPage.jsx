@@ -397,7 +397,7 @@ const PricingPage = () => {
           </p>
         </motion.div>
 
-        {/* FAQ Section */}
+        {/* FAQ Section - FULLY RESPONSIVE */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -423,12 +423,14 @@ const PricingPage = () => {
             Frequently Asked Questions
           </h2>
 
+          {/* Responsive FAQ Grid */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gridTemplateColumns: "1fr",
               gap: "clamp(16px, 3vw, 24px)",
             }}
+            className="faq-grid"
           >
             {faqs.map((faq, index) => (
               <motion.div
@@ -444,13 +446,14 @@ const PricingPage = () => {
                   border: "1px solid var(--border-color)",
                 }}
               >
+                {/* Question Header - Clickable */}
                 <div
                   onClick={() => toggleFaq(index)}
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    padding: "clamp(16px, 3vw, 20px)",
+                    padding: "clamp(16px, 4vw, 20px) clamp(16px, 4vw, 24px)",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     background:
@@ -461,12 +464,13 @@ const PricingPage = () => {
                 >
                   <h4
                     style={{
-                      fontSize: "clamp(15px, 3.5vw, 16px)",
+                      fontSize: "clamp(15px, 3.8vw, 16px)",
                       fontWeight: "600",
                       margin: 0,
                       color: "var(--accent)",
                       flex: 1,
-                      paddingRight: "12px",
+                      paddingRight: "16px",
+                      lineHeight: "1.4",
                     }}
                   >
                     {faq.question}
@@ -479,16 +483,18 @@ const PricingPage = () => {
                         openFaq === index ? "rotate(180deg)" : "rotate(0deg)",
                       display: "flex",
                       alignItems: "center",
+                      flexShrink: 0,
                     }}
                   >
                     {openFaq === index ? (
-                      <FaChevronUp size={14} />
+                      <FaChevronUp size={16} />
                     ) : (
-                      <FaChevronDown size={14} />
+                      <FaChevronDown size={16} />
                     )}
                   </div>
                 </div>
 
+                {/* Answer - Expandable (same on all devices) */}
                 <div
                   style={{
                     padding: openFaq === index ? "0 20px 20px 20px" : "0 20px",
@@ -496,11 +502,10 @@ const PricingPage = () => {
                     overflow: "hidden",
                     transition: "all 0.3s ease",
                   }}
-                  className="faq-answer-desktop"
                 >
                   <p
                     style={{
-                      fontSize: "clamp(13px, 3vw, 14px)",
+                      fontSize: "clamp(13px, 3.2vw, 14px)",
                       color: "var(--text-secondary)",
                       lineHeight: "1.6",
                       margin: 0,
@@ -514,14 +519,21 @@ const PricingPage = () => {
             ))}
           </div>
 
+          {/* CSS for Desktop - Two columns (NO forced open answers) */}
           <style>{`
-            @media (min-width: 768px) {
-              .faq-answer-desktop {
-                max-height: 500px !important;
-                padding: 0 20px 20px 20px !important;
-              }
-            }
-          `}</style>
+    @media (min-width: 768px) {
+      .faq-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+      }
+    }
+    
+    @media (min-width: 1200px) {
+      .faq-grid {
+        gap: 24px !important;
+      }
+    }
+  `}</style>
         </motion.div>
 
         {/* Terms & Disclosures */}
