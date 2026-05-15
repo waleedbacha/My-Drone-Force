@@ -24,11 +24,11 @@ const formatDateTime = (date) => {
   });
 };
 
-// Draw a horizontal line
-const drawLine = (doc, y, xStart = 20, xEnd = 190) => {
-  doc.setDrawColor(200, 200, 200);
-  doc.line(xStart, y, xEnd, y);
-};
+// // Draw a horizontal line
+// const drawLine = (doc, y, xStart = 20, xEnd = 190) => {
+//   doc.setDrawColor(200, 200, 200);
+//   doc.line(xStart, y, xEnd, y);
+// };
 
 // Draw a section header (NO EMOJIS - clean text only)
 const drawSectionHeader = (doc, title, y, color = [0, 102, 204]) => {
@@ -335,7 +335,7 @@ const generateAgreementPDF = async (user, token) => {
 
     page2Y += 8;
     doc.setFont("helvetica", "bold");
-    doc.text("Email: info@mydroneforce.com", 25, page2Y);
+    doc.text("Email: mydroneforce@gmail.com", 25, page2Y);
     page2Y += 7;
     doc.text("Phone: (501) 859-4672", 25, page2Y);
     page2Y += 7;

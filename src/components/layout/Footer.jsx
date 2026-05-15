@@ -287,7 +287,7 @@ const Footer = () => {
                 <span
                   style={{ color: "var(--text-secondary)", fontSize: "13px" }}
                 >
-                  info@mydroneforce.com
+                  mydroneforce@gmail.com
                 </span>
               </li>
             </ul>

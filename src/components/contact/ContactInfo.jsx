@@ -42,10 +42,10 @@ const ContactInfo = () => {
     {
       icon: <FaEnvelope />,
       title: "Email",
-      details: ["info@mydroneforce.com"],
+      details: ["mydroneforce@gmail.com"],
       subtext: "24/7 Support",
       color: "#2196f3",
-      link: "mailto:info@mydroneforce.com",
+      link: "mailto:mydroneforce@gmail.com",
     },
     {
       icon: <FaMapMarkerAlt />,
