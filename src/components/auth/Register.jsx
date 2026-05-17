@@ -79,7 +79,7 @@ const Register = () => {
   // Step 4 Pledge Data (renamed from step3)
   const [step4Data, setStep4Data] = useState({
     userId: null,
-    cohortMonth: "",
+    cohortMonth: "June 2026",
     attendVirtualSessions: false,
     attendInPersonSessions: false,
     understandMissedImpact: false,

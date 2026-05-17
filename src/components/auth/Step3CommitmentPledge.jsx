@@ -99,11 +99,8 @@ const Step3CommitmentPledge = ({
                 name="cohortMonth"
                 className="form-control"
                 style={{ display: "inline-block", width: "150px" }}
-                placeholder="e.g., April 2026"
-                value={formData.cohortMonth}
-                onChange={(e) =>
-                  setFormData({ ...formData, cohortMonth: e.target.value })
-                }
+                value="June 2026"
+                readOnly
                 required
               />
             </div>
