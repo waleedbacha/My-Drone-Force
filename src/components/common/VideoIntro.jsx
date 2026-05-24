@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const VideoIntro = ({ onComplete }) => {
+const VideoIntro = ({ onComplete, onVideoEnd }) => {
   const [showIntro, setShowIntro] = useState(true);
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -11,15 +11,19 @@ const VideoIntro = ({ onComplete }) => {
     const fallbackTimer = setTimeout(() => {
       if (showIntro) {
         setShowIntro(false);
+        // Call onVideoEnd first (for popup), then onComplete
+        if (onVideoEnd) onVideoEnd();
         if (onComplete) onComplete();
       }
     }, 32000);
 
     return () => clearTimeout(fallbackTimer);
-  }, [onComplete, showIntro]);
+  }, [onComplete, onVideoEnd, showIntro]);
 
   const handleVideoEnd = () => {
     setShowIntro(false);
+    // Call onVideoEnd first (for popup), then onComplete
+    if (onVideoEnd) onVideoEnd();
     if (onComplete) onComplete();
   };
 
@@ -29,6 +33,8 @@ const VideoIntro = ({ onComplete }) => {
 
   const handleSkip = () => {
     setShowIntro(false);
+    // Call onVideoEnd first (for popup), then onComplete
+    if (onVideoEnd) onVideoEnd();
     if (onComplete) onComplete();
   };
 

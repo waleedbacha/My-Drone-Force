@@ -30,6 +30,7 @@ import EventsPage from "./components/events/EventsPage";
 import PricingSection from "./components/pricing/PricingSection";
 import PricingPage from "./components/pricing/PricingPage";
 import ClarityInit from "./components/microsoft-clarity/ClarityInit";
+import WebinarPopup from "./components/common/WebinarPopup"; // ADD THIS
 
 // Component to conditionally show Navbar and Footer
 const Layout = ({ children, toggleTheme, theme }) => {
@@ -57,6 +58,11 @@ function App() {
   const [theme, setTheme] = useState("dark");
   const [showIntro, setShowIntro] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showWebinarPopup, setShowWebinarPopup] = useState(false); // ADD THIS
+
+  // Zoom Webinar Link
+  const webinarZoomLink =
+    "https://us06web.zoom.us/meeting/register/nTqIJnRYTpy__B-bgSktkw";
 
   // Check if intro should play (only once per session)
   useEffect(() => {
@@ -91,13 +97,37 @@ function App() {
     sessionStorage.setItem("introPlayed", "true");
   };
 
+  // Handler for when video ends - shows webinar popup
+  const handleVideoEnd = () => {
+    // Check if user already saw popup this session
+    const hasSeenPopup = sessionStorage.getItem("webinarPopupSeen");
+
+    if (!hasSeenPopup) {
+      // Small delay for smooth transition
+      setTimeout(() => {
+        setShowWebinarPopup(true);
+        sessionStorage.setItem("webinarPopupSeen", "true");
+      }, 500);
+    }
+  };
+
+  // Handler to close popup
+  const handleClosePopup = () => {
+    setShowWebinarPopup(false);
+  };
+
   if (isLoading) {
     return null;
   }
 
   return (
     <>
-      {showIntro && <VideoIntro onComplete={handleIntroComplete} />}
+      {showIntro && (
+        <VideoIntro
+          onComplete={handleIntroComplete}
+          onVideoEnd={handleVideoEnd}
+        />
+      )}
 
       <Router>
         <ScrollToTop />
@@ -156,6 +186,13 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </Router>
+
+      {/* Webinar Registration Popup */}
+      <WebinarPopup
+        isOpen={showWebinarPopup}
+        onClose={handleClosePopup}
+        zoomLink={webinarZoomLink}
+      />
     </>
   );
 }
