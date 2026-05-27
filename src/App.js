@@ -62,7 +62,7 @@ function App() {
 
   // Zoom Webinar Link
   const webinarZoomLink =
-    "https://us06web.zoom.us/meeting/register/nTqIJnRYTpy__B-bgSktkw";
+    "https://us06web.zoom.us/meeting/register/R0MYPAaIQiyEhEhqZqKRrA";
 
   // Check if intro should play (only once per session)
   useEffect(() => {

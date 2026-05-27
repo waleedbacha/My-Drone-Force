@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
@@ -36,21 +37,22 @@ const EventsPage = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // Event date: May 26, 2026 at 7:00 PM CST
-  const eventDate = new Date("May 26, 2026 19:00:00 CST");
+  // >>> UPDATED: Event date: June 8, 2026 at 2:00 PM Central Time (CST/CDT)
+  // Using America/Chicago timezone equivalent: June 8, 2026, 14:00 CST
+  const eventDate = new Date("June 8, 2026 14:00:00 CST");
 
   const currentEvent = {
-    id: 1,
-    title: "Free Drone Pilot Webinar",
+    id: 2, // Changed ID to reflect new event
+    title: "Take Flight: Drone Career Webinar",
     host: "Steffanie Rivers",
-    date: "Tuesday, May 26, 2026",
-    time: "7:00 PM",
-    zoomLink: "https://us06web.zoom.us/meeting/register/nTqIJnRYTpy__B-bgSktkw",
+    date: "Monday, June 8, 2026",
+    time: "2:00 PM Central Time",
+    zoomLink: "https://us06web.zoom.us/meeting/register/R0MYPAaIQiyEhEhqZqKRrA",
     heroImage:
-      "https://res.cloudinary.com/dcjhzgigb/image/upload/v1778055415/Gemini_Generated_Image_2dzhcz2dzhcz2dzh_y4fkzb.png",
+      "https://res.cloudinary.com/dcjhzgigb/image/upload/v1779910833/second_webinar_jlvkqh.png",
     hostImage:
       "https://res.cloudinary.com/dcjhzgigb/image/upload/v1778052320/upcoming-event3_ydcgpt.png",
-    registrationDeadline: "May 26, 2026 at 6:00 PM CST",
+    registrationDeadline: "June 8, 2026 at 1:00 PM Central Time",
     whatYouWillLearn: [
       "How to get FAA certified in 60 days",
       "Job opportunities paying $60,000+",
@@ -107,6 +109,9 @@ const EventsPage = () => {
     window.open(currentEvent.zoomLink, "_blank");
   };
 
+  // Mobile hero height
+  const heroHeight = isMobile ? "45vh" : "60vh";
+
   return (
     <div
       style={{
@@ -114,7 +119,7 @@ const EventsPage = () => {
         background: "var(--bg-primary)",
       }}
     >
-      {/* Hero Section - Responsive with improved mobile image */}
+      {/* Hero Section - Responsive */}
       <div
         style={{
           position: "relative",
@@ -136,7 +141,7 @@ const EventsPage = () => {
           }}
         />
 
-        {/* Gradient Overlay - Stronger on mobile for better text contrast */}
+        {/* Gradient Overlay */}
         <div
           style={{
             position: "absolute",
@@ -209,7 +214,7 @@ const EventsPage = () => {
                     fontSize: isMobile ? "9px" : "12px",
                   }}
                 />
-                <span>May 26, 2026</span>
+                <span>June 8, 2026</span>
               </div>
               <div
                 style={{
@@ -230,7 +235,7 @@ const EventsPage = () => {
                     fontSize: isMobile ? "9px" : "12px",
                   }}
                 />
-                <span>7:00 PM CST</span>
+                <span>2:00 PM Central Time</span>
               </div>
               <div
                 style={{

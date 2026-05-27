@@ -62,7 +62,7 @@ const WebinarPopup = ({ isOpen, onClose, zoomLink }) => {
             {/* Content */}
             <div className="webinar-popup-content">
               <h3 className="webinar-popup-headline">
-                Free Drone Pilot Webinar
+                Take Flight: Drone Career Webinar
               </h3>
 
               <p className="webinar-popup-description">
