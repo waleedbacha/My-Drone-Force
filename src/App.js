@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -188,11 +189,11 @@ function App() {
       </Router>
 
       {/* Webinar Registration Popup */}
-      <WebinarPopup
+      {/* <WebinarPopup
         isOpen={showWebinarPopup}
         onClose={handleClosePopup}
         zoomLink={webinarZoomLink}
-      />
+      /> */}
     </>
   );
 }
