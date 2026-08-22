@@ -16,6 +16,9 @@ const EventsPage = () => {
   // Update this section when event changes
   // ============================================
 
+  // ✅ ADD THIS FLAG - Set to false to hide event, true to show
+  const showEvent = false; // ← CHANGE THIS TO true TO RE-ENABLE
+
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -112,6 +115,68 @@ const EventsPage = () => {
   // Mobile hero height
   const heroHeight = isMobile ? "45vh" : "60vh";
 
+  // ✅ IF showEvent IS FALSE, SHOW "COMING SOON" MESSAGE
+  if (!showEvent) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--bg-primary)",
+          padding: "40px 20px",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "clamp(64px, 10vw, 80px)",
+            marginBottom: "24px",
+          }}
+        >
+          🚀
+        </div>
+        <h1
+          style={{
+            fontSize: "clamp(28px, 5vw, 42px)",
+            fontWeight: "bold",
+            color: "var(--text-primary)",
+            marginBottom: "16px",
+          }}
+        >
+          New Webinars and Trainings Coming Soon!
+        </h1>
+        <p
+          style={{
+            fontSize: "clamp(16px, 3vw, 20px)",
+            color: "var(--text-secondary)",
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
+        >
+          We're preparing our next drone career webinars and trainings. Check
+          back soon for updates and registration details.
+        </p>
+        <div
+          style={{
+            marginTop: "32px",
+            padding: "16px 32px",
+            background: "rgba(99, 102, 241, 0.1)",
+            borderRadius: "12px",
+            border: "1px solid var(--border-color)",
+          }}
+        >
+          <p style={{ color: "var(--text-secondary)", margin: 0 }}>
+            📅 Details coming soon
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ✅ IF showEvent IS TRUE, SHOW THE FULL EVENT PAGE
   return (
     <div
       style={{
